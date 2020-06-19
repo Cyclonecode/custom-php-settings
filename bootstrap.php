@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Custom PHP settings
  * Description: Customize PHP settings.
- * Version: 1.2.5
+ * Version: 1.2.6
  * Author: Cyclonecode
  * Author URI: https://stackoverflow.com/users/1047662/cyclonecode?tab=profile
  * Copyright: Cyclonecode

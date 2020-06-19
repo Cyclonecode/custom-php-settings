@@ -3,9 +3,9 @@ Contributors: cyclonecode
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PBTHN3L67QA2S&source=url&lc=US&item_name=Custom+PHP+Settings
 Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
-Tested up to: 5.2
+Tested up to: 5.4.2
 Requires PHP: 5.4
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,7 +55,7 @@ The settings table will display all non-system php settings that can be customiz
 Some settings might be displayed in red because they are changed somewhere else, perhaps through a customized php.ini file, by wordpress itself, a plugin or in some other way.
 For instance if you have enabled **WP_DEBUG** in your **wp-config.php** file the **error_reporting** setting will turn red.
 
-If you have questions or perhaps some idea on things that should be added you can also try [slack](https://join.slack.com/t/cyclonecode/shared_invite/enQtNDk0OTY0ODg5ODU5LTc5YzEyOWUyNjE1ODZjYTM1MDY0NDExOTc3ZDgzYmExNzMyZmJkNmYyYzI2Y2ZiMTFhYTRlOWI3OTA5MTg3NWM) or [skype](https://join.skype.com/invite/pssjBP98xreQ).
+If you have questions or perhaps some idea on things that should be added you can also try [slack](https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ).
 
 = Resources =
 
@@ -89,7 +89,7 @@ php_value variables_order EPCS  <-- Remove
 If you run into any trouble, don’t hesitate to add a new topic under the support section:
 [https://wordpress.org/support/plugin/custom-php-settings/](https://wordpress.org/support/plugin/custom-php-settings/)
 
-You can also try contacting me on [slack](https://join.slack.com/t/cyclonecode/shared_invite/enQtNDk0OTY0ODg5ODU5LTc5YzEyOWUyNjE1ODZjYTM1MDY0NDExOTc3ZDgzYmExNzMyZmJkNmYyYzI2Y2ZiMTFhYTRlOWI3OTA5MTg3NWM).
+You can also try contacting me on [slack](https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ).
 
 == Installation ==
 
@@ -104,6 +104,9 @@ You can also try contacting me on [slack](https://join.slack.com/t/cyclonecode/s
 = 1.1.0 =
 Check Server API and do **not** make any changes if using CGI/Fast-CGI.
 
+= 1.2.6 =
+Fixes a bug where the plugin could not be deleted.
+
 == Screenshots ==
 
 1. Customize PHP settings from within wordpress administration.
@@ -115,6 +118,9 @@ Check Server API and do **not** make any changes if using CGI/Fast-CGI.
 7. All $_COOKIE variables.
 
 == Changelog ==
+
+= 1.2.6 =
+- Fixes a bug where the plugin could not be deleted.
 
 = 1.2.5 =
 - Add correct comment character when using `.user.ini` file.

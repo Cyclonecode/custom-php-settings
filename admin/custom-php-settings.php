@@ -9,7 +9,7 @@ use CustomPhpSettings\Config\Settings;
 
 class CustomPhpSettings extends Singleton
 {
-    const VERSION = '1.2.5';
+    const VERSION = '1.2.6';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
 
@@ -234,18 +234,22 @@ class CustomPhpSettings extends Singleton
     /**
      * Uninstalls the plugin.
      */
-    public function delete()
+    public static function delete()
     {
-        if ($this->settings->get('restore_config')) {
-            $config_file = get_home_path() . '.htaccess';
-            if (self::getCGIMode()) {
-                $config_file = get_home_path() . $this->userIniFileName;
-                self::addMarker($config_file, 'CUSTOM PHP SETTINGS', array(), ';');
-            } else {
-                self::addMarker($config_file, 'CUSTOM PHP SETTINGS', array());
-            }
+        self::removeSettings();
+        delete_option(self::SETTINGS_NAME);
+    }
+
+    /**
+     * Remove any current settings from either .htaccess or user ini file.
+     */
+    protected static function removeSettings()
+    {
+        $configFile = get_home_path() . (self::getCGIMode() ? ini_get('user_ini.filename') : '.htaccess');
+        $settings = new Settings(self::SETTINGS_NAME);
+        if ($settings->get('restore_config')) {
+            self::addMarker($configFile, 'CUSTOM PHP SETTINGS', array(), self::getCGIMode() ? ';' : '#');
         }
-        $this->settings->delete();
     }
 
     /**
