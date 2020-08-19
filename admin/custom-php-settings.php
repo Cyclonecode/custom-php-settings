@@ -9,7 +9,7 @@ use CustomPhpSettings\Config\Settings;
 
 class CustomPhpSettings extends Singleton
 {
-    const VERSION = '1.2.6';
+    const VERSION = '1.2.7';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
 
@@ -56,16 +56,9 @@ class CustomPhpSettings extends Singleton
     private $userIniTTL = 0;
 
     /**
-     * Constructor.
-     */
-    protected function __construct()
-    {
-    }
-
-    /**
      *
      */
-    public function initialize()
+    public function init()
     {
         // Allow people to change what capability is required to use this plugin.
         $this->capability = apply_filters('custom_php_settings_cap', $this->capability);

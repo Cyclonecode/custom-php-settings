@@ -3,9 +3,9 @@ Contributors: cyclonecode
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PBTHN3L67QA2S&source=url&lc=US&item_name=Custom+PHP+Settings
 Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
-Tested up to: 5.4.2
+Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,9 @@ Fixes a bug where the plugin could not be deleted.
 7. All $_COOKIE variables.
 
 == Changelog ==
+
+= 1.2.7 =
+- Improve singleton class.
 
 = 1.2.6 =
 - Fixes a bug where the plugin could not be deleted.

@@ -1,7 +1,7 @@
 {
   "name": "cyclonecode/custom-php-settings",
   "type": "wordpress-plugin",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "keywords": ["wordpress", "plugin", "development", ".htaccess", "apache", "apache2", "php", "settings", "php settings"],
   "description": "Customize php settings for you wordpress installation.",
   "require": {

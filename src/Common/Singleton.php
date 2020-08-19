@@ -23,5 +23,19 @@ abstract class Singleton
     /**
      * Singleton constructor.
      */
-    abstract protected function __construct();
+    final private function __construct()
+    {
+        $this->init();
+    }
+
+    /**
+     * Prevent instantiation.
+     */
+    final private function __clone()
+    {
+    }
+
+    protected function init()
+    {
+    }
 }
