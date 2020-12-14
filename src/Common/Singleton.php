@@ -10,7 +10,7 @@ abstract class Singleton
     protected static $instance = array();
 
     /**
-     * @return \CisionBlock\Common\Singleton|null
+     * @return \CustomPhpSettings\Common\Singleton|null
      */
     final public static function getInstance()
     {
