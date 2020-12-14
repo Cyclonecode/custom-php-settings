@@ -9,10 +9,11 @@ if (isset($php_settings) && count($php_settings)) {
 ?>
 <div class="wrap">
     <h1><?php echo __('Custom PHP Settings', self::TEXT_DOMAIN); ?></h1>
-    <?php require_once(CUSTOM_PHP_SETTINGS_PLUGIN_DIR . 'admin/views/cps-tabs.php'); ?>
+    <?php require_once('cps-tabs.php'); ?>
     <?php settings_errors(); ?>
-    <form action="" method="POST">
+    <form action="<?php echo admin_url('admin-post.php'); ?>" method="POST">
     <?php wp_nonce_field('custom-php-settings-action', 'custom-php-settings-nonce'); ?>
+        <input type="hidden" name="action" value="custom_php_settings_save_settings" />
         <table class="form-table">
             <tr>
                 <td>

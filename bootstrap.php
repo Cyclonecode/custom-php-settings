@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Plugin Name: Custom PHP settings
  * Description: Customize PHP settings.
- * Version: 1.2.7
+ * Version: 1.3.0
  * Author: Cyclonecode
  * Author URI: https://stackoverflow.com/users/1047662/cyclonecode?tab=profile
  * Copyright: Cyclonecode
@@ -14,6 +15,7 @@
  * @package custom-php-settings
  * @author custom-php-settings
  */
+
 namespace CustomPhpSettings;
 
 /**
@@ -23,16 +25,16 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CUSTOM_PHP_SETTINGS_PLUGIN_DIR', plugin_dir_path(__FILE__));
+require_once __DIR__ . '/vendor/autoload.php';
 
-require_once CUSTOM_PHP_SETTINGS_PLUGIN_DIR . '/admin/custom-php-settings.php';
+use CustomPhpSettings\Backend\Backend;
 
 add_action('plugins_loaded', function () {
     if (is_admin()) {
-        CustomPhpSettings::getInstance();
+        Backend::getInstance();
     }
 });
 
-register_activation_hook(__FILE__, array('CustomPhpSettings\CustomPhpSettings', 'activate'));
-register_deactivation_hook(__FILE__, array('CustomPhpSettings\CustomPhpSettings', 'deActivate'));
-register_uninstall_hook(__FILE__, array('CustomPhpSettings\CustomPhpSettings', 'delete'));
+register_activation_hook(__FILE__, array('CustomPhpSettings\Backend\Backend', 'activate'));
+register_deactivation_hook(__FILE__, array('CustomPhpSettings\Backend\Backend', 'deActivate'));
+register_uninstall_hook(__FILE__, array('CustomPhpSettings\Backend\Backend', 'delete'));

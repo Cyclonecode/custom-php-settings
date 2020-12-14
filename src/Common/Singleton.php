@@ -1,4 +1,5 @@
 <?php
+
 namespace CustomPhpSettings\Common;
 
 abstract class Singleton

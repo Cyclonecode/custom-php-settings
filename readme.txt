@@ -3,7 +3,7 @@ Contributors: cyclonecode
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PBTHN3L67QA2S&source=url&lc=US&item_name=Custom+PHP+Settings
 Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.4
 Stable tag: 1.2.7
 License: GPLv2 or later
@@ -119,54 +119,10 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.2.7 =
-- Improve singleton class.
-
-= 1.2.6 =
-- Fixes a bug where the plugin could not be deleted.
-
-= 1.2.5 =
-- Add correct comment character when using `.user.ini` file.
-- Move `.user.ini` to root instead of the `wp-admin` folder, so settings have a global effect.
-- Tweak file permission for both `.user.ini` and `.htaccess` file.
-
-= 1.2.4 =
-- Escape data.
-- Add tab support for all sections.
-- Only show sub section if not empty.
-- Check if settings needs to be updated.
-
-= 1.2.3 =
-- Fix permission check for configuration file.
-
-= 1.2.2 =
-- Add global value to settings table.
-- Add dynamic tabs for super globals.
-- Add footer text in admin dashboard.
-
-= 1.2.1 =
-- Check if wp_enqueue_code_editor() does exist.
-- Use array instead of string in call to insert_with_markers().
-- Switch to shell mode in codemirror.
-- Get name and use configured user INI file.
-- Add information about user INI file.
-- Added composer support.
-
-= 1.2.0 =
-- Refactor code to use templates.
-- Use .user.ini or .htaccess file depending on server api.
-- Add more PHP information.
-- Fix misspelled class name.
-
-= 1.1.0 =
-- Add deactivation hook.
-- Add option to restore the .htaccess file when the plugin is deactivated ors uninstalled.
-- Make sure no changes is done in CGI/Fast-CGI mode.
-- Add basic PHP information table.
-
-= 1.0.1 =
-- Add class constants.
-- Add settings table.
-
-= 1.0.0 =
-- Initial commit.
+= 1.3.0 =
+- Do not change file permissions.
+- Use admin_post hook to handle form submission.
+- Added more PHP information.
+- Added Apache information.
+- Added autoloader.
+- Added changelog.

@@ -1,21 +1,21 @@
 <?php
-namespace CustomPhpSettings;
 
-require_once CUSTOM_PHP_SETTINGS_PLUGIN_DIR . 'src/Common/Singleton.php';
-require_once CUSTOM_PHP_SETTINGS_PLUGIN_DIR . 'src/Config/Settings.php';
+namespace CustomPhpSettings\Backend;
 
 use CustomPhpSettings\Common\Singleton;
 use CustomPhpSettings\Config\Settings;
 
-class CustomPhpSettings extends Singleton
+class Backend extends Singleton
 {
-    const VERSION = '1.2.7';
+    const VERSION = '1.3.0';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
+    const PARENT_MENU_SLUG = 'tools.php';
+    const MENU_SLUG = 'custom-php-settings';
 
     /**
      *
-     * @var \src\config\Settings
+     * @var \CustomPhpSettings\Config\Settings
      */
     private $settings;
 
@@ -88,7 +88,7 @@ class CustomPhpSettings extends Singleton
     {
         // add_action('admin_notices', array($this, 'addQuestion' ), 10);
         add_action('admin_menu', array($this, 'addMenu'));
-        add_action('admin_init', array($this, 'handleFormSubmission'));
+        add_action('admin_post_custom_php_settings_save_settings', array($this, 'saveSettings'));
         add_action('admin_enqueue_scripts', array($this, 'addScripts'));
     }
 
@@ -238,7 +238,7 @@ class CustomPhpSettings extends Singleton
      */
     protected static function removeSettings()
     {
-        $configFile = get_home_path() . (self::getCGIMode() ? ini_get('user_ini.filename') : '.htaccess');
+        $configFile = self::getConfigFilePath();
         $settings = new Settings(self::SETTINGS_NAME);
         if ($settings->get('restore_config')) {
             self::addMarker($configFile, 'CUSTOM PHP SETTINGS', array(), self::getCGIMode() ? ';' : '#');
@@ -274,12 +274,12 @@ class CustomPhpSettings extends Singleton
     public function addMenu()
     {
         add_submenu_page(
-            'tools.php',
+            self::PARENT_MENU_SLUG,
             __('Custom PHP Settings', self::TEXT_DOMAIN),
             __('Custom PHP Settings', self::TEXT_DOMAIN),
             $this->capability,
-            'custom-php-settings',
-            array($this, 'displaySettingsPage')
+            self::MENU_SLUG,
+            array($this, 'doSettingsPage')
         );
     }
 
@@ -362,16 +362,9 @@ class CustomPhpSettings extends Singleton
      */
     protected static function addMarker($filename, $marker, $insertion, $comment = '#')
     {
-        if (!file_exists($filename)) {
-            if (!is_writable(dirname($filename))) {
-                return false;
-            }
-            if (!touch($filename)) {
-                return false;
-            }
-        } elseif (!is_writeable($filename)) {
-            return false;
-        }
+//        if (self::createIfNotExist($filename) === false) {
+//            return false;
+//        }
 
         if (!is_array($insertion)) {
             $insertion = explode("\n", $insertion);
@@ -446,45 +439,22 @@ class CustomPhpSettings extends Singleton
     }
 
     /**
-     * Adds custom php settings to .htaccess file.
-     */
-    protected function updateHtAccessFile()
-    {
-        $htaccess_file = get_home_path() . '.htaccess';
-        if ($this->createIfNotExist($htaccess_file) === false) {
-            $this->addSettingsMessage(sprintf(__('%s does not exists or is not writable.', self::TEXT_DOMAIN), $htaccess_file));
-            return;
-        }
-        $section = $this->getSettingsAsArray();
-        $this->addSettingsMessage(__('Settings updated and stored in .htaccess', self::TEXT_DOMAIN), 'updated');
-        self::addMarker($htaccess_file, 'CUSTOM PHP SETTINGS', $section);
-    }
-
-    /**
-     * Adds custom php settings to user INI file.
-     */
-    protected function updateIniFile()
-    {
-        $ini_file = get_home_path() . $this->userIniFileName;
-        if ($this->createIfNotExist($ini_file) === false) {
-            $this->addSettingsMessage(sprintf(__('%s does not exists or is not writable.', self::TEXT_DOMAIN), $ini_file));
-            return;
-        }
-        $section = $this->getSettingsAsArray();
-        $message = sprintf(__('Settings updated and stored in %s.', self::TEXT_DOMAIN), $this->userIniFileName);
-        $this->addSettingsMessage($message, 'updated');
-        self::addMarker($ini_file, 'CUSTOM PHP SETTINGS', $section, ';');
-    }
-    /**
-     *
+     * Try to store settings in either .htaccess or .ini file.
      */
     protected function updateConfigFile()
     {
-        if (self::getCGIMode()) {
-            $this->updateIniFile();
-        } else {
-            $this->updateHtAccessFile();
+        $configFile = self::getConfigFilePath();
+//        if ((!file_exists($configFile) && is_writeable($home_path)) || is_writable($configFile)) {
+//
+//        }
+        if (self::createIfNotExist($configFile) === false) {
+            $this->addSettingsMessage(sprintf(__('%s does not exists or is not writable.', self::TEXT_DOMAIN), $configFile));
+            return;
         }
+        $section = $this->getSettingsAsArray();
+        $message = sprintf(__('Settings updated and stored in %s.', self::TEXT_DOMAIN), $configFile);
+        $this->addSettingsMessage($message, 'updated');
+        self::addMarker($configFile, 'CUSTOM PHP SETTINGS', $section, self::getCGIMode() ? ';' : '#');
     }
 
     /**
@@ -494,7 +464,7 @@ class CustomPhpSettings extends Singleton
      *
      * @return bool
      */
-    protected function createIfNotExist($filename)
+    protected static function createIfNotExist($filename)
     {
         $fp = null;
         if (!file_exists($filename)) {
@@ -504,12 +474,16 @@ class CustomPhpSettings extends Singleton
             if (!touch($filename)) {
                 return false;
             }
+            // Make sure the file is created with a minimum set of permissions.
+            $perms = fileperms($filename);
+            if ($perms) {
+                chmod($filename, $perms | 0644);
+            }
         } elseif (!($fp = @fopen($filename, 'a'))) {
             return false;
         }
         if ($fp) {
             fclose($fp);
-            chmod($filename, 644);
         }
     }
 
@@ -544,7 +518,7 @@ class CustomPhpSettings extends Singleton
      *
      * @return bool
      */
-    public function handleFormSubmission()
+    public function saveSettings()
     {
         // Check if settings form is submitted.
         if (filter_input(INPUT_POST, 'custom-php-settings', FILTER_SANITIZE_STRING)) {
@@ -587,9 +561,20 @@ class CustomPhpSettings extends Singleton
                     FILTER_VALIDATE_BOOLEAN
                 );
 
-                return $this->settings->save();
+                $this->settings->save();
+
+                set_transient('cps_settings_errors', get_settings_errors());
+                wp_safe_redirect(admin_url(self::PARENT_MENU_SLUG . '?page=' . self::MENU_SLUG));
             }
         }
+    }
+
+    /**
+     * Returns absolute path to configuration file.
+     */
+    protected static function getConfigFilePath()
+    {
+        return get_home_path() . (self::getCGIMode() ? ini_get('user_ini.filename') : '.htaccess');
     }
 
     /**
@@ -607,8 +592,16 @@ class CustomPhpSettings extends Singleton
     /**
      * Display the settings page.
      */
-    public function displaySettingsPage()
+    public function doSettingsPage()
     {
+        // Display any settings messages
+        $setting_errors = get_transient('cps_settings_errors');
+        if ($setting_errors) {
+            foreach ($setting_errors as $error) {
+                $this->addSettingsMessage($error['message'], $error['type']);
+            }
+            delete_transient('cps_settings_errors');
+        }
         if ($this->getCurrentTab() === 'settings') {
             require_once __DIR__ . '/views/cps-settings-table.php';
         }
@@ -621,5 +614,29 @@ class CustomPhpSettings extends Singleton
         if ($this->getCurrentTab() === 'general') {
             require_once __DIR__ . '/views/cps-general.php';
         }
+        if ($this->getCurrentTab() === 'apache') {
+            require_once __DIR__ . '/views/cps-apache.php';
+        }
+    }
+
+    /**
+     * Format bytes
+     *
+     * @param $bytes
+     * @param int $precision
+     * @return string
+     */
+    public function formatBytes($bytes, $precision = 2)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        $bytes /= pow(1024, $pow);
+        // $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
