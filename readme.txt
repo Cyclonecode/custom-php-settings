@@ -5,7 +5,7 @@ Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 1.2.7
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,10 +119,14 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.3.0 =
-- Do not change file permissions.
-- Use admin_post hook to handle form submission.
-- Added more PHP information.
-- Added Apache information.
-- Added autoloader.
-- Added changelog.
+= 1.3.1 =
+- Add PHP extension version.
+- Add translation hints.
+- Load script and stylesheet only when needed.
+- Add multi level support for configuration.
+- Add PHP information.
+- Add support to store comments and blank lines.
+- Add Wordpress information.
+- Remove GET page.
+- Break out classes to separate repository.
+- Update changelog.

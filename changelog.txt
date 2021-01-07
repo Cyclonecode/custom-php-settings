@@ -1,8 +1,16 @@
+= 1.3.0 =
+- Do not change file permissions.
+- Use admin_post hook to handle form submission.
+- Add PHP information.
+- Add Apache information.
+- Add autoloader.
+- Add changelog.
+
 = 1.2.7 =
 - Improve singleton class.
 
 = 1.2.6 =
-- Fixes a bug where the plugin could not be deleted.
+- Fix a bug where the plugin could not be deleted.
 
 = 1.2.5 =
 - Add correct comment character when using `.user.ini` file.
@@ -29,7 +37,7 @@
 - Switch to shell mode in codemirror.
 - Get name and use configured user INI file.
 - Add information about user INI file.
-- Added composer support.
+- Add composer support.
 
 = 1.2.0 =
 - Refactor code to use templates.

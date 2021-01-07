@@ -4,19 +4,29 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitac47102b10aeb65630adbda53d85f2b8
+class ComposerStaticInitabc974fa8d9817d5c587b31e2bdbf928
 {
     public static $prefixLengthsPsr4 = array (
         'C' => 
         array (
+            'Cyclonecode\\' => 12,
             'CustomPhpSettings\\' => 18,
+            'Composer\\Installers\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Cyclonecode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cyclonecode/wordpress/src',
+        ),
         'CustomPhpSettings\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Composer\\Installers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
         ),
     );
 
@@ -27,9 +37,9 @@ class ComposerStaticInitac47102b10aeb65630adbda53d85f2b8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitac47102b10aeb65630adbda53d85f2b8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitac47102b10aeb65630adbda53d85f2b8::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitac47102b10aeb65630adbda53d85f2b8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitabc974fa8d9817d5c587b31e2bdbf928::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitabc974fa8d9817d5c587b31e2bdbf928::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitabc974fa8d9817d5c587b31e2bdbf928::$classMap;
 
         }, null, ClassLoader::class);
     }

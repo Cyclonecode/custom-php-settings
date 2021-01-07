@@ -1,36 +1,58 @@
 {
-  "name": "cyclonecode/custom-php-settings",
-  "type": "wordpress-plugin",
-  "version": "1.3.0",
-  "keywords": ["wordpress", "plugin", "development", ".htaccess", "apache", "apache2", "php", "settings", "php settings"],
-  "description": "Customize php settings for you wordpress installation.",
-  "require": {
-    "composer/installers": "^1.6",
-    "php": ">=5.4"
-  },
-  "require-dev": {
-    "squizlabs/php_codesniffer": "^3.5.8"
-  },
-  "license": "GPLv2 or later",
-  "readme": "readme.txt",
-  "homepage": "https://wordpress.org/plugins/custom-php-settings/",
-  "authors": [
-    {
-      "name": "Cyclonecode",
-      "email": "cyclonecode@gmail.com",
-      "role": "Maintainer"
-    }
-  ],
-  "support": {
-    "email": "cyclonecode@gmail.com",
-    "issues": "https://wordpress.org/support/plugin/custom-php-settings/"
-  },
-  "autoload": {
-    "psr-4": {
-      "CustomPhpSettings\\": [
-        "src/"
-      ]
-    }
-  },
-  "minimum-stability": "stable"
+    "name": "cyclonecode/custom-php-settings",
+    "type": "wordpress-plugin",
+    "version": "1.3.1",
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "development",
+        ".htaccess",
+        "apache",
+        "apache2",
+        "php",
+        "settings",
+        "php settings"
+    ],
+    "description": "Customize php settings for you wordpress installation.",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:Cyclonecode/Wordpress.git"
+        }
+    ],
+    "require": {
+        "composer/installers": "^1.6",
+        "php": ">=5.4",
+        "cyclonecode/wordpress": "^1.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5.8"
+    },
+    "time": "2021-01-07",
+    "license": "GPLv2 or later",
+    "readme": "readme.txt",
+    "homepage": "https://wordpress.org/plugins/custom-php-settings/",
+    "authors": [
+        {
+            "name": "Cyclonecode",
+            "email": "cyclonecode@gmail.com",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "email": "cyclonecode.help@gmail.com",
+        "issues": "https://wordpress.org/support/plugin/custom-php-settings/",
+        "source": "https://plugins.trac.wordpress.org/browser/cision-block/",
+        "docs": "https://wordpress.org/plugins/custom-php-settings/#description",
+        "rss": "https://plugins.trac.wordpress.org/log/custom-php-settings/?limit=100&mode=stop_on_copy&format=rss",
+        "chat": "https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ"
+    },
+    "autoload": {
+        "psr-4": {
+            "CustomPhpSettings\\": [
+                "src/"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
 }

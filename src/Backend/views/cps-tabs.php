@@ -1,6 +1,6 @@
 <?php
 $tabs = array(
-    'general' => __('General', self::TEXT_DOMAIN),
+    'general' => __('Editor', self::TEXT_DOMAIN),
     'settings' => __('Settings', self::TEXT_DOMAIN),
     'info' => __('PHP Information', self::TEXT_DOMAIN),
 );
@@ -15,12 +15,6 @@ if (strstr(php_sapi_name(), 'apache')) {
 if (strchr($variables_order, 'C') && !empty($_COOKIE)) {
     $childTabs['cookie-vars'] = __('COOKIE', self::TEXT_DOMAIN);
 }
-if (strchr($variables_order, 'G') && !empty($_GET)) {
-    $childTabs['get-vars'] = __('GET', self::TEXT_DOMAIN);
-}
-if (strchr($variables_order, 'P') && !empty($_POST)) {
-    $childTabs['post-vars'] = __('POST', self::TEXT_DOMAIN);
-}
 if (strchr($variables_order, 'S') && !empty($_SERVER)) {
     $childTabs['server-vars'] = __('SERVER', self::TEXT_DOMAIN);
 }
@@ -30,16 +24,16 @@ if (strchr($variables_order, 'E') && !empty($_ENV)) {
 ?>
 <h2 class="nav-tab-wrapper">
     <?php foreach ($tabs as $key => $label) : ?>
-        <?php $active = ($key == $this->getCurrentTab() ? ' nav-tab-active' : ''); ?>
+        <?php $active = ($key === $this->getCurrentTab() ? ' nav-tab-active' : ''); ?>
         <a class="nav-tab<?php echo $active; ?>"
            href="<?php echo admin_url('tools.php?page=custom-php-settings&tab=' . $key); ?>"><?php echo $label; ?></a>
     <?php endforeach; ?>
     <?php foreach ($tabs as $key => $label) : ?>
-        <?php $active = ($key == $this->getCurrentTab() ? ' nav-tab-active' : ''); ?>
-        <?php if ($active && $this->getCurrentTab() == 'info') : ?>
+        <?php $active = ($key === $this->getCurrentTab() ? ' nav-tab-active' : ''); ?>
+        <?php if ($active && $this->getCurrentTab() === 'info') : ?>
             <h3 class="nav-tab-wrapper">
                 <?php foreach ($childTabs as $subKey => $subLabel) : ?>
-                    <?php $active = ($subKey == $this->getCurrentSection() ? ' nav-tab-active' : ''); ?>
+                    <?php $active = ($subKey === $this->getCurrentSection() ? ' nav-tab-active' : ''); ?>
                     <a class="nav-tab nav-tab-small<?php echo $active; ?>"
                        href="<?php echo admin_url('tools.php?page=custom-php-settings&tab=' . $key . '&section=' . $subKey); ?>">
                         <?php echo $subLabel; ?>

@@ -2,12 +2,12 @@
 
 namespace CustomPhpSettings\Backend;
 
-use CustomPhpSettings\Common\Singleton;
-use CustomPhpSettings\Config\Settings;
+use Cyclonecode\Wordpress\Singleton;
+use Cyclonecode\Wordpress\Settings;
 
 class Backend extends Singleton
 {
-    const VERSION = '1.3.0';
+    const VERSION = '1.3.1';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
     const PARENT_MENU_SLUG = 'tools.php';
@@ -15,7 +15,7 @@ class Backend extends Singleton
 
     /**
      *
-     * @var \CustomPhpSettings\Config\Settings
+     * @var Settings
      */
     private $settings;
 
@@ -28,6 +28,8 @@ class Backend extends Singleton
         'version' => self::VERSION,
         'php_settings' => array(),
         'restore_config' => true,
+        'trim_comments' => true,
+        'trim_whitespaces' => true,
     );
 
     /**
@@ -123,7 +125,7 @@ class Backend extends Singleton
         $settings_link = '<a href="' . admin_url('tools.php?page=custom-php-settings') . '">' .
             __('Settings', self::TEXT_DOMAIN) .
             '</a>';
-        if ($file == 'custom-php-settings/bootstrap.php') {
+        if ($file === 'custom-php-settings/bootstrap.php') {
             array_unshift($links, $settings_link);
         }
 
@@ -133,10 +135,13 @@ class Backend extends Singleton
     /**
      * Add scripts.
      */
-    public function addScripts()
+    public function addScripts($hook)
     {
+        if ($hook !== 'tools_page_custom-php-settings') {
+            return;
+        }
         // Added in wordpress 4.1.
-        if (function_exists('wp_enqueue_code_editor')) {
+        if (function_exists('wp_enqueue_code_editor') && $this->getCurrentTab() === 'general') {
             wp_enqueue_code_editor(array());
             wp_enqueue_script(
                 'js-code-editor',
@@ -146,6 +151,7 @@ class Backend extends Singleton
                 true
             );
         }
+
         wp_enqueue_style('custom-php-settings', plugin_dir_url(__FILE__) . 'css/admin.css');
     }
 
@@ -155,6 +161,12 @@ class Backend extends Singleton
     public function checkForUpgrade()
     {
         if (version_compare($this->settings->get('version'), self::VERSION, '<')) {
+            if ($this->settings->get('version') < '1.3.1') {
+                // Transform old format.
+                $settings = $this->settings->toOptionsArray();
+                $this->settings->delete();
+                $this->settings->setFromArray($settings);
+            }
             $this->settings->set('version', self::VERSION);
             $this->settings->save();
         }
@@ -203,6 +215,7 @@ class Backend extends Singleton
      */
     public static function activate()
     {
+        // TODO: Perhaps show something special when first activated?
     }
 
     /**
@@ -211,17 +224,7 @@ class Backend extends Singleton
      */
     public static function deActivate()
     {
-        $settings = new Settings(self::SETTINGS_NAME);
-        if ($settings->get('restore_config')) {
-            $config_file = get_home_path() . '.htaccess';
-            if (self::getCGIMode()) {
-                $userIniFile = ini_get('user_ini.filename');
-                $config_file = get_home_path() . $userIniFile;
-                self::addMarker($config_file, 'CUSTOM PHP SETTINGS', array(), ';');
-            } else {
-                self::addMarker($config_file, 'CUSTOM PHP SETTINGS', array());
-            }
-        }
+        self::removeSettings();
     }
 
     /**
@@ -238,9 +241,9 @@ class Backend extends Singleton
      */
     protected static function removeSettings()
     {
-        $configFile = self::getConfigFilePath();
         $settings = new Settings(self::SETTINGS_NAME);
         if ($settings->get('restore_config')) {
+            $configFile = self::getConfigFilePath();
             self::addMarker($configFile, 'CUSTOM PHP SETTINGS', array(), self::getCGIMode() ? ';' : '#');
         }
     }
@@ -255,7 +258,7 @@ class Backend extends Singleton
     public function adminFooter($footer_text)
     {
         $screen = get_current_screen();
-        if ($screen->id == 'tools_page_custom-php-settings') {
+        if ($screen->id === 'tools_page_custom-php-settings') {
             $rate_text = sprintf(
                 __('Thank you for using <a href="%1$s" target="_blank">Custom PHP Settings</a>! Please <a href="%2$s" target="_blank">rate us on WordPress.org</a>', self::TEXT_DOMAIN),
                 'https://wordpress.org/plugins/custom-php-settings',
@@ -318,29 +321,21 @@ class Backend extends Singleton
     {
         $cgiMode = $this->getCGIMode();
         $section = array();
-        $errors = '';
         foreach ($this->settings->php_settings as $key => $value) {
-            if (!empty($value)) {
-                $setting = explode('=', trim($value));
-                if (count($setting) == 2 && strlen($setting[0]) && strlen($setting[1])) {
-                    if ($cgiMode) {
-                        $section[] = $setting[0] . '=' . $setting[1];
-                    } else {
-                        $section[] = 'php_value ' . $setting[0] . ' ' . $setting[1];
-                    }
-                } else {
-                    if (!strlen($setting[0])) {
-                        $errors .= __('All settings must be in the format', self::TEXT_DOMAIN) . ' key=value<br/>';
-                    } elseif (strpos($setting[0], '#')) {
-                        $errors .= sprintf(__('Setting %s is not in a valid format', self::TEXT_DOMAIN), $setting[0]) . '<br />';
-                    }
+            if (empty($value)) {
+                if (!$this->settings->get('trim_whitespaces')) {
+                    $section[] = '';
                 }
-            } else {
-                $section[] = '';
             }
-        }
-        if (!empty($errors)) {
-            $this->addSettingsMessage($errors);
+            elseif ($value[0] === '#') {
+                if (!$this->settings->get('trim_comments')) {
+                    $section[] = $value;
+                }
+            }
+            else {
+                $setting = explode('=', trim($value));
+                $section[] = $cgiMode ? $setting[0] . '=' . $setting[1] : 'php_value ' . $setting[0] . ' ' . $setting[1];
+            }
         }
         return $section;
     }
@@ -362,10 +357,6 @@ class Backend extends Singleton
      */
     protected static function addMarker($filename, $marker, $insertion, $comment = '#')
     {
-//        if (self::createIfNotExist($filename) === false) {
-//            return false;
-//        }
-
         if (!is_array($insertion)) {
             $insertion = explode("\n", $insertion);
         }
@@ -444,14 +435,13 @@ class Backend extends Singleton
     protected function updateConfigFile()
     {
         $configFile = self::getConfigFilePath();
-//        if ((!file_exists($configFile) && is_writeable($home_path)) || is_writable($configFile)) {
-//
-//        }
         if (self::createIfNotExist($configFile) === false) {
+            /* translators: %s: Name of configuration file */
             $this->addSettingsMessage(sprintf(__('%s does not exists or is not writable.', self::TEXT_DOMAIN), $configFile));
             return;
         }
         $section = $this->getSettingsAsArray();
+        /* translators: %s: Name of configuration file */
         $message = sprintf(__('Settings updated and stored in %s.', self::TEXT_DOMAIN), $configFile);
         $this->addSettingsMessage($message, 'updated');
         self::addMarker($configFile, 'CUSTOM PHP SETTINGS', $section, self::getCGIMode() ? ';' : '#');
@@ -498,25 +488,31 @@ class Backend extends Singleton
     {
         $iniSettings = array_keys($this->getIniSettings());
         $setting = explode('=', $setting);
-        if (count($setting) == 1 && strpos($setting[0], '#') !== false) {
-            // This is a comment.
+        if (count($setting) === 1) {
+            if (strlen($setting[0]) === 0) {
+                // This is a blank line.
+                return 1;
+            }
+            elseif ($setting[0][0] === '#') {
+                // This is a comment.
+                return 1;
+            }
+            elseif (in_array($setting[0], $iniSettings)) {
+                /* translators: %s: Name of PHP setting */
+                $this->addSettingsMessage(sprintf(__('%s must be in the format: key=value', self::TEXT_DOMAIN), $setting[0]) . '<br />');
+                return -2;
+            }
+        }
+        elseif (count($setting) === 2 && in_array($setting[0], $iniSettings)) {
             return 1;
         }
-        if (count($setting) == 1 && strlen($setting[0]) === 0) {
-            // This is a blank line.
-            return 1;
-        }
-        if (count($setting) == 2 && in_array($setting[0], $iniSettings)) {
-            return 1;
-        }
-        return 0;
+        /* translators: %s: Name of PHP setting */
+        $this->addSettingsMessage(sprintf(__('%s is not a valid setting.', self::TEXT_DOMAIN), $setting[0]) . '<br />');
+        return -1;
     }
 
     /**
      * Handle form data for configuration page.
-     * @todo Better handling of settings during save.
-     *
-     * @return bool
      */
     public function saveSettings()
     {
@@ -529,39 +525,38 @@ class Backend extends Singleton
 
             // Verify nonce and referer.
             if (check_admin_referer('custom-php-settings-action', 'custom-php-settings-nonce')) {
-                $errors = '';
                 // Filter and sanitize form values.
+                $settings = array();
                 $raw_settings = filter_input(
                     INPUT_POST,
-                    'php-settings',
+                    'php_settings',
                     FILTER_SANITIZE_STRING
                 );
-                $raw_settings = rtrim($raw_settings);
-                $raw_settings = explode(PHP_EOL, $raw_settings);
-                $raw_settings = array_map('trim', $raw_settings);
-                $settings = array();
+                $raw_settings = array_map('trim', explode(PHP_EOL, trim($raw_settings)));
                 foreach ($raw_settings as $key => $value) {
-                    if ($this->validSetting($value)) {
+                    if ($this->validSetting($value) > 0) {
                         $settings[$key] = str_replace(';', '', $value);
-                    } else {
-                        $setting = explode('=', $value);
-                        $errors .= sprintf(__('%s is not a valid setting.', self::TEXT_DOMAIN), $setting[0]) . '<br />';
                     }
                 }
-                if (!empty($errors)) {
-                    $this->addSettingsMessage($errors);
-                }
                 $this->settings->set('php_settings', $settings);
+                $this->settings->set('restore_config', filter_input(
+                    INPUT_POST,
+                    'restore_config',
+                    FILTER_VALIDATE_BOOLEAN
+                ));
+                $this->settings->set('trim_comments', filter_input(
+                        INPUT_POST,
+                    'trim_comments',
+                    FILTER_VALIDATE_BOOLEAN
+                ));
+                $this->settings->set('trim_whitespaces', filter_input(
+                    INPUT_POST,
+                    'trim_whitespaces',
+                    FILTER_VALIDATE_BOOLEAN
+                ));
+                $this->settings->save();
 
                 $this->updateConfigFile();
-
-                $this->settings->restore_config = filter_input(
-                    INPUT_POST,
-                    'restore-config',
-                    FILTER_VALIDATE_BOOLEAN
-                );
-
-                $this->settings->save();
 
                 set_transient('cps_settings_errors', get_settings_errors());
                 wp_safe_redirect(admin_url(self::PARENT_MENU_SLUG . '?page=' . self::MENU_SLUG));
@@ -602,20 +597,13 @@ class Backend extends Singleton
             }
             delete_transient('cps_settings_errors');
         }
-        if ($this->getCurrentTab() === 'settings') {
-            require_once __DIR__ . '/views/cps-settings-table.php';
-        }
         if ($this->getCurrentTab() === 'info' && $this->getCurrentSection()) {
             $template = __DIR__ . '/views/cps-' . $this->currentSection . '.php';
-            if (file_exists($template)) {
-                require_once $template;
-            }
+        } else {
+            $template = __DIR__ . '/views/cps-' . $this->currentTab. '.php';
         }
-        if ($this->getCurrentTab() === 'general') {
-            require_once __DIR__ . '/views/cps-general.php';
-        }
-        if ($this->getCurrentTab() === 'apache') {
-            require_once __DIR__ . '/views/cps-apache.php';
+        if (file_exists($template)) {
+            require_once $template;
         }
     }
 

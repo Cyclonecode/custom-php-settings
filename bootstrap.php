@@ -2,8 +2,11 @@
 
 /**
  * Plugin Name: Custom PHP settings
+ * Plugin URI: https://wordpress.org/plugins/custom-php-settings/
  * Description: Customize PHP settings.
- * Version: 1.3.0
+ * Version: 1.3.1
+ * Requires at least: 3.1.0
+ * Requires PHP: 5.4
  * Author: Cyclonecode
  * Author URI: https://stackoverflow.com/users/1047662/cyclonecode?tab=profile
  * Copyright: Cyclonecode
@@ -17,13 +20,6 @@
  */
 
 namespace CustomPhpSettings;
-
-/**
- * Exit if accessed directly.
- */
-if (!defined('ABSPATH')) {
-    exit;
-}
 
 require_once __DIR__ . '/vendor/autoload.php';
 
