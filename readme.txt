@@ -127,6 +127,7 @@ Fixes a bug where the plugin could not be deleted.
 - Add PHP information.
 - Add support to store comments and blank lines.
 - Add Wordpress information.
-- Remove GET page.
+- Remove GET and POST page.
 - Break out classes to separate repository.
+- Set default settings.
 - Update changelog.

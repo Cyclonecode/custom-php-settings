@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'CustomPhpSettings\\Backend\\Backend' => $baseDir . '/src/Backend/Backend.php',
 );

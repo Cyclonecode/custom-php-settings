@@ -2,8 +2,8 @@
 
 namespace CustomPhpSettings\Backend;
 
-use Cyclonecode\Wordpress\Singleton;
-use Cyclonecode\Wordpress\Settings;
+use Cyclonecode\Plugin\Singleton;
+use Cyclonecode\Plugin\Settings;
 
 class Backend extends Singleton
 {
@@ -18,19 +18,6 @@ class Backend extends Singleton
      * @var Settings
      */
     private $settings;
-
-    /**
-     * Default settings.
-     *
-     * @var array
-     */
-    public static $default_settings = array(
-        'version' => self::VERSION,
-        'php_settings' => array(),
-        'restore_config' => true,
-        'trim_comments' => true,
-        'trim_whitespaces' => true,
-    );
 
     /**
      * @var string $capability
@@ -161,6 +148,15 @@ class Backend extends Singleton
     public function checkForUpgrade()
     {
         if (version_compare($this->settings->get('version'), self::VERSION, '<')) {
+            $defaults = array(
+                'php_settings' => array(),
+                'restore_config' => true,
+                'trim_comments' => true,
+                'trim_whitespaces' => true,
+            );
+            foreach ($defaults as $key => $value) {
+                $this->settings->add($key, $value);
+            }
             if ($this->settings->get('version') < '1.3.1') {
                 // Transform old format.
                 $settings = $this->settings->toOptionsArray();

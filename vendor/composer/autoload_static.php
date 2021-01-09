@@ -9,29 +9,20 @@ class ComposerStaticInitabc974fa8d9817d5c587b31e2bdbf928
     public static $prefixLengthsPsr4 = array (
         'C' => 
         array (
-            'Cyclonecode\\' => 12,
             'CustomPhpSettings\\' => 18,
-            'Composer\\Installers\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Cyclonecode\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/cyclonecode/wordpress/src',
-        ),
         'CustomPhpSettings\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
-        ),
-        'Composer\\Installers\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
         ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'CustomPhpSettings\\Backend\\Backend' => __DIR__ . '/../..' . '/src/Backend/Backend.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

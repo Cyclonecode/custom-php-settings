@@ -14,16 +14,10 @@
         "php settings"
     ],
     "description": "Customize php settings for you wordpress installation.",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Cyclonecode/Wordpress.git"
-        }
-    ],
     "require": {
         "composer/installers": "^1.6",
         "php": ">=5.4",
-        "cyclonecode/wordpress": "^1.0.0"
+        "cyclonecode/plugin": "^1.0.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5.8"
