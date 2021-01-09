@@ -1,0 +1,28 @@
+{
+  "name": "cyclonecode/plugin",
+  "type": "library",
+  "version": "1.0.0",
+  "keywords": ["wordpress", "plugin", "settings", "components"],
+  "description": "Class for use when building wordpress plugins.",
+  "time": "2021-01-07",
+  "license": "GPL-2.0-or-later",
+  "readme": "readme.txt",
+  "homepage": "https://github.com/Cyclonecode/Plugin/",
+  "authors": [
+    {
+      "name": "Cyclonecode",
+      "email": "cyclonecode@gmail.com",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "email": "cyclonecode.help@gmail.com",
+    "issues": "https://github.com/Cyclonecode/Plugin/issues",
+    "source": "https://github.com/Cyclonecode/Plugin",
+    "chat": "https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ"
+  },
+  "autoload": {
+    "psr-4": { "Cyclonecode\\": "src/" }
+  },
+  "minimum-stability": "stable"
+}
