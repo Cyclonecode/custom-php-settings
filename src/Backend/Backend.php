@@ -198,6 +198,9 @@ class Backend extends Singleton
      */
     public function addHeader()
     {
+        if (get_current_screen()->id !== 'tools_page_custom-php-settings') {
+            return;
+        }
         $sectionText = array(
                 'general' =>  __('Editor', self::TEXT_DOMAIN),
                 'apache' => __('Apache Information', self::TEXT_DOMAIN),
@@ -215,7 +218,7 @@ class Backend extends Singleton
         }
         ?>
         <div id="custom-php-settings-admin-header">
-            <span><img width="64" src="<?php echo plugin_dir_url(__FILE__); ?>assets/icon-256x256.png" alt="<?php _e('Custom PHP Settings', self::TEXT_DOMAIN); ?>" />
+            <span><img width="64" src="<?php echo plugin_dir_url(__FILE__); ?>assets/icon-128x128.png" alt="<?php _e('Custom PHP Settings', self::TEXT_DOMAIN); ?>" />
                 <h1><?php _e('Custom PHP Settings', self::TEXT_DOMAIN); ?><?php echo $title; ?></h1>
             </span>
         </div>
