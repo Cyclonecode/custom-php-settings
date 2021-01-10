@@ -186,7 +186,7 @@ class Backend extends Singleton
         ?>
         <div id="note-2" class="custom-php-settings-notice notice notice-info is-dismissible" style="position: relative;">
             <h3><?php _e('Do you have any feedback or need support?', self::TEXT_DOMAIN); ?></h3>
-            <p><?php echo sprintf(__('If you have any request for improvement or just need some help. Do not hesitate to open a ticket in the <a href="%s" target="_blank">support section</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/cision-block/#new-topic-0'); ?></p>
+            <p><?php echo sprintf(__('If you have any request for improvement or just need some help. Do not hesitate to open a ticket in the <a href="%s" target="_blank">support section</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/#new-topic-0'); ?></p>
             <p><?php echo sprintf(__('I can also be reached by email at <a href="%s">%s</a>', self::TEXT_DOMAIN), 'mailto:cyclonecode.help@gmail.com?subject=Custom PHP Settings Support', 'cyclonecode.help@gmail.com'); ?></p>
             <p><?php _e('I hope you will have an awesome day!', self::TEXT_DOMAIN); ?></p>
         </div>

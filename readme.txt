@@ -119,7 +119,7 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.3.1 =
+= 1.4.0  =
 - Add PHP extension version.
 - Add translation hints.
 - Load script and stylesheet only when needed.
