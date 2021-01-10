@@ -14,8 +14,8 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => '1.3.1',
-    'version' => '1.3.1.0',
+    'pretty_version' => '1.4.0',
+    'version' => '1.4.0.0',
     'aliases' => 
     array (
     ),
@@ -35,8 +35,8 @@ private static $installed = array (
     ),
     'cyclonecode/custom-php-settings' => 
     array (
-      'pretty_version' => '1.3.1',
-      'version' => '1.3.1.0',
+      'pretty_version' => '1.4.0',
+      'version' => '1.4.0.0',
       'aliases' => 
       array (
       ),

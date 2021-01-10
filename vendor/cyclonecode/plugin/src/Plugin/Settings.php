@@ -139,7 +139,7 @@ class Settings
      */
     public function add($name, $value)
     {
-        if (!array_key_exists($name, $this->settings)) {
+        if (!isset($this->settings[$name])) {
             $this->set($name, $value);
         }
     }
