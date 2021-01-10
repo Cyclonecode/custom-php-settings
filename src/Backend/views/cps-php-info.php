@@ -18,8 +18,8 @@ $env = array(
     __('Memory usage', self::TEXT_DOMAIN) => $this->formatBytes(memory_get_usage()),
     __('Memory peak usage', self::TEXT_DOMAIN) => $this->formatBytes(memory_get_peak_usage()),
     __('Temporary directory', self::TEXT_DOMAIN) => sys_get_temp_dir(),
-    __('User INI file', self::TEXT_DOMAIN) => $this->userIniFileName,
-    __('User INI file cache TTL', self::TEXT_DOMAIN) => $this->userIniTTL,
+    __('User INI file', self::TEXT_DOMAIN) => ini_get('user_ini.filename'),
+    __('User INI file cache TTL', self::TEXT_DOMAIN) => ini_get('user_ini.cache_ttl'),
     __('Thread Safety', self::TEXT_DOMAIN) => __(defined('ZEND_THREAD_SAFE') && ZEND_THREAD_SAFE ? 'enabled' : 'disabled', self::TEXT_DOMAIN),
     __('IPv6 Support', self::TEXT_DOMAIN) => __(extension_loaded('sockets') && defined('AF_INET6') ? 'enabled' : 'disabled', self::TEXT_DOMAIN),
     __('PHP Streams', self::TEXT_DOMAIN) => implode(', ', stream_get_wrappers()),
@@ -29,9 +29,7 @@ $env = array(
 );
 ?>
 <div class="wrap">
-    <h1><?php echo __('PHP Information', self::TEXT_DOMAIN); ?></h1>
     <?php require_once('cps-tabs.php'); ?>
-    <?php settings_errors(); ?>
     <table class="custom-php-settings-table widefat">
         <thead>
             <th><?php echo __('Name', self::TEXT_DOMAIN); ?></th>

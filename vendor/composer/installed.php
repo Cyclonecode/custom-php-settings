@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'c6e7a04c189efcf9c37607e31b0438496a00d9a9',
+      'reference' => 'e6aa8e42837f1e2e2c7929fe29463d27f70fd6d5',
     ),
     'roundcube/plugin-installer' => 
     array (

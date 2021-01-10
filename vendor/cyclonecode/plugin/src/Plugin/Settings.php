@@ -46,7 +46,7 @@ class Settings
     }
 
     /**
-     * @return false|mixed|string|void
+     * @return false|string
      */
     public function toJSON()
     {
@@ -54,7 +54,7 @@ class Settings
     }
 
     /**
-     *
+     * @return string
      */
     public function toYaml()
     {
@@ -69,6 +69,16 @@ class Settings
     public function getOptionName()
     {
         return $this->optionName;
+    }
+
+    /**
+     * Returns the current version.
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 
     /**
@@ -101,24 +111,21 @@ class Settings
      *   Name of option to set.
      * @param mixed $value
      *   The value to set.
-     * @param string $section
-     *   Name of section to use.
      */
-    public function set($name, $value, $section = 'options')
+    public function set($name, $value)
     {
-        $this->settings[$section][$name] = $value;
+        $this->settings[$name] = $value;
     }
 
     /**
      * Sets configuration from array.
      *
      * @param array $settings
-     * @param string $section
      */
-    public function setFromArray(array $settings, $section = 'options')
+    public function setFromArray(array $settings)
     {
         foreach ($settings as $key => $value) {
-            $this->set($key, $value, $section);
+            $this->set($key, $value);
         }
     }
 
@@ -129,13 +136,11 @@ class Settings
      *   Name of setting to add.
      * @param mixed $value
      *   Value to add.
-     * @param string $section
-     *   Name of section to use.
      */
-    public function add($name, $value, $section = 'options')
+    public function add($name, $value)
     {
-        if (!isset($this->settings[$section][$name])) {
-            $this->set($name, $value, $section);
+        if (!array_key_exists($name, $this->settings)) {
+            $this->set($name, $value);
         }
     }
 
@@ -149,7 +154,6 @@ class Settings
      */
     public function __get($name)
     {
-        // todo: we are marking this as protected for now
         return $this->get($name);
     }
 
@@ -158,14 +162,12 @@ class Settings
      *
      * @param string $name
      *   Name of option to get.
-     * @param string $section
-     *   Name of section to use.
      *
      * @return mixed
      */
-    public function get($name, $section = 'options')
+    public function get($name)
     {
-        return (isset($this->settings[$section][$name]) ? $this->settings[$section][$name] : null);
+        return (isset($this->settings[$name]) ? $this->settings[$name] : null);
     }
 
     /**
@@ -173,12 +175,10 @@ class Settings
      *
      * @param string $name
      *   Name of setting to remove.
-     * @param string $section
-     *   Name of section to use.
      */
-    public function remove($name, $section = 'options')
+    public function remove($name)
     {
-        unset($this->settings[$section][$name]);
+        unset($this->settings[$name]);
     }
 
     /**
@@ -188,14 +188,12 @@ class Settings
      *   Name of setting.
      * @param string $to
      *   New name for setting.
-     * @param string $section
-     *   Name of section.
      */
-    public function rename($from, $to, $section = 'options')
+    public function rename($from, $to)
     {
-        if (isset($this->settings[$section][$from])) {
-            $this->settings[$section][$to] = $this->settings[$section][$from];
-            $this->remove($from, $section);
+        if (isset($this->settings[$from])) {
+            $this->settings[$to] = $this->settings[$from];
+            $this->remove($from);
         }
     }
 
@@ -214,10 +212,7 @@ class Settings
      */
     public function save()
     {
-        // ksort($this->settings);
-        foreach ($this->settings as $section => $options) {
-            ksort($this->settings[$section]);
-        }
+        ksort($this->settings);
         return update_option($this->optionName, $this->settings);
     }
 
@@ -226,16 +221,13 @@ class Settings
      *
      * @param array $options
      *   An array which keys will be used to validate the current settings keys.
-     * @param string $section
-     *   Name of section to use.
      */
-    public function clean(array $options, $section = 'options')
+    public function clean(array $options)
     {
         if (is_array($options)) {
-            $keys = array_keys($options);
-            foreach ($this->settings[$section] as $key => $value) {
-                if (!in_array($key, $keys)) {
-                    unset($this->settings[$section][$key]);
+            foreach ($options as $key => $value) {
+                if (!in_array($key, $this->settings)) {
+                    unset($this->settings[$key]);
                 }
             }
         }

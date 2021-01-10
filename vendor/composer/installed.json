@@ -151,12 +151,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Cyclonecode/Plugin.git",
-                "reference": "c6e7a04c189efcf9c37607e31b0438496a00d9a9"
+                "reference": "e6aa8e42837f1e2e2c7929fe29463d27f70fd6d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Cyclonecode/Plugin/zipball/c6e7a04c189efcf9c37607e31b0438496a00d9a9",
-                "reference": "c6e7a04c189efcf9c37607e31b0438496a00d9a9",
+                "url": "https://api.github.com/repos/Cyclonecode/Plugin/zipball/e6aa8e42837f1e2e2c7929fe29463d27f70fd6d5",
+                "reference": "e6aa8e42837f1e2e2c7929fe29463d27f70fd6d5",
                 "shasum": ""
             },
             "time": "2021-01-07T00:00:00+00:00",

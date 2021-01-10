@@ -4,7 +4,7 @@
  * Plugin Name: Custom PHP settings
  * Plugin URI: https://wordpress.org/plugins/custom-php-settings/
  * Description: Customize PHP settings.
- * Version: 1.3.1
+ * Version: 1.4.0
  * Requires at least: 3.1.0
  * Requires PHP: 5.4
  * Author: Cyclonecode
