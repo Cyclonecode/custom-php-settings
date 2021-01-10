@@ -199,7 +199,7 @@ class Backend extends Singleton
     public function addHeader()
     {
         $sectionText = array(
-                'general' =>  __('Custom PHP Settings', self::TEXT_DOMAIN),
+                'general' =>  __('Editor', self::TEXT_DOMAIN),
                 'apache' => __('Apache Information', self::TEXT_DOMAIN),
                 'php-info' => __('PHP Information', self::TEXT_DOMAIN),
                 'extensions' => __('Loaded Extensions', self::TEXT_DOMAIN),
