@@ -260,7 +260,7 @@ class Backend extends Singleton
                 'js-code-editor',
                 plugin_dir_url(__FILE__) . 'js/code-editor.js',
                 array('jquery'),
-                '',
+                self::VERSION,
                 true
             );
         }
@@ -268,13 +268,18 @@ class Backend extends Singleton
             'custom-php-settings',
             plugin_dir_url(__FILE__) . 'js/admin.js',
             array('jquery'),
-            '',
+            self::VERSION,
             true
         );
         wp_localize_script('custom-php-settings', 'data', array(
             '_nonce' => wp_create_nonce('custom_php_settings_dismiss_notice'),
         ));
-        wp_enqueue_style('custom-php-settings', plugin_dir_url(__FILE__) . 'css/admin.css');
+        wp_enqueue_style(
+            'custom-php-settings',
+            plugin_dir_url(__FILE__) . 'css/admin.css',
+            array(),
+            self::VERSION
+        );
     }
 
     /**
