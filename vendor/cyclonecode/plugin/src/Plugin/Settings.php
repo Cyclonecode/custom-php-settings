@@ -10,14 +10,14 @@ class Settings
      *
      * @var string
      */
-    private $optionName = '';
+    protected $optionName = '';
 
     /**
      * An array of settings.
      *
      * @var array $settings
      */
-    private $settings = array();
+    protected $settings = array();
 
     /**
      * Version

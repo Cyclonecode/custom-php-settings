@@ -1,4 +1,4 @@
-(function ($) {
+(($) => {
     $(document).ready(() => {
         // Handle dismissible notifications.
         $('.custom-php-settings-notice.notice.is-dismissible').each((a, el) => {

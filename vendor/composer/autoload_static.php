@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf33d0319c5cfbede8b32f16cda962cbd
+class ComposerStaticInit155073517313b6f3886b1c0e5763812b
 {
     public static $prefixLengthsPsr4 = array (
         'C' => 
@@ -131,14 +131,15 @@ class ComposerStaticInitf33d0319c5cfbede8b32f16cda962cbd
         'CustomPhpSettings\\Backend\\Backend' => __DIR__ . '/../..' . '/src/Backend/Backend.php',
         'Cyclonecode\\Plugin\\Settings' => __DIR__ . '/..' . '/cyclonecode/plugin/src/Plugin/Settings.php',
         'Cyclonecode\\Plugin\\Singleton' => __DIR__ . '/..' . '/cyclonecode/plugin/src/Plugin/Singleton.php',
+        'Cyclonecode\\Plugin\\Widget' => __DIR__ . '/..' . '/cyclonecode/plugin/src/Plugin/Widget.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf33d0319c5cfbede8b32f16cda962cbd::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf33d0319c5cfbede8b32f16cda962cbd::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf33d0319c5cfbede8b32f16cda962cbd::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit155073517313b6f3886b1c0e5763812b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit155073517313b6f3886b1c0e5763812b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit155073517313b6f3886b1c0e5763812b::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -1,10 +1,10 @@
 {
   "name": "cyclonecode/plugin",
   "type": "library",
-  "version": "1.0.0",
-  "keywords": ["wordpress", "plugin", "settings", "components"],
+  "version": "1.0.2",
+  "keywords": ["wordpress", "plugin", "settings", "widget", "singleton", "components"],
   "description": "Class for use when building wordpress plugins.",
-  "time": "2021-01-07",
+  "time": "2021-01-25",
   "license": "GPL-2.0-or-later",
   "readme": "readme.txt",
   "homepage": "https://github.com/Cyclonecode/Plugin/",

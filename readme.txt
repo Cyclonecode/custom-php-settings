@@ -119,20 +119,8 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.4.0  =
-- Add PHP extension version.
-- Add translation hints.
-- Load script and stylesheet only when needed.
-- Add header.
-- Add PHP information.
-- Add option to store comments.
-- Add option to store blank lines.
-- Add option to write to configuration file.
-- Add admin review notice.
-- Add admin support notice.
-- Add Wordpress information.
-- Remove GET and POST page.
-- Remove unused member variables.
-- Break out classes to separate repository.
-- Set default settings.
-- Update changelog.
+= 1.4.1 =
+- Add version to scripts.
+- Bump cyclonecode/plugin to 1.0.2.
+- Add sponsor, rate and support links.
+- Refactor tabs.

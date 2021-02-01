@@ -1,8 +1,8 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => '1.4.0',
-    'version' => '1.4.0.0',
+    'pretty_version' => '1.4.1',
+    'version' => '1.4.1.0',
     'aliases' => 
     array (
     ),
@@ -22,8 +22,8 @@
     ),
     'cyclonecode/custom-php-settings' => 
     array (
-      'pretty_version' => '1.4.0',
-      'version' => '1.4.0.0',
+      'pretty_version' => '1.4.1',
+      'version' => '1.4.1.0',
       'aliases' => 
       array (
       ),
@@ -31,12 +31,12 @@
     ),
     'cyclonecode/plugin' => 
     array (
-      'pretty_version' => '1.0.0',
-      'version' => '1.0.0.0',
+      'pretty_version' => '1.0.2',
+      'version' => '1.0.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e6aa8e42837f1e2e2c7929fe29463d27f70fd6d5',
+      'reference' => 'c181404037ad0ff70fb10db443d0857e78d09de8',
     ),
     'roundcube/plugin-installer' => 
     array (

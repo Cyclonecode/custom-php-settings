@@ -10,7 +10,7 @@ abstract class Singleton
     protected static $instance = array();
 
     /**
-     * @return \CustomPhpSettings\Common\Singleton|null
+     * @return \Cyclonecode\Plugin\Singleton|null
      */
     final public static function getInstance()
     {

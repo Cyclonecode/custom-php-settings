@@ -7,7 +7,7 @@ use Cyclonecode\Plugin\Settings;
 
 class Backend extends Singleton
 {
-    const VERSION = '1.4.0';
+    const VERSION = '1.4.1';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
     const PARENT_MENU_SLUG = 'tools.php';
@@ -79,6 +79,7 @@ class Backend extends Singleton
     {
         add_filter('admin_footer_text', array($this, 'adminFooter'));
         add_filter('plugin_action_links', array($this, 'addActionLinks'), 10, 2);
+        add_filter('plugin_row_meta', array($this, 'filterPluginRowMeta'), 10, 4);
     }
 
     /**
@@ -203,6 +204,7 @@ class Backend extends Singleton
         }
         $sectionText = array(
                 'general' =>  __('Editor', self::TEXT_DOMAIN),
+                'environment' => __('Environment variables', self::TEXT_DOMAIN),
                 'apache' => __('Apache Information', self::TEXT_DOMAIN),
                 'php-info' => __('PHP Information', self::TEXT_DOMAIN),
                 'extensions' => __('Loaded Extensions', self::TEXT_DOMAIN),
@@ -235,14 +237,47 @@ class Backend extends Singleton
      */
     public function addActionLinks($links, $file)
     {
-        $settings_link = '<a href="' . admin_url('tools.php?page=custom-php-settings') . '">' .
+        $settings_link = '<a href="' . admin_url(self::PARENT_MENU_SLUG . '?page=' . self::MENU_SLUG) . '">' .
             __('Settings', self::TEXT_DOMAIN) .
             '</a>';
         if ($file === 'custom-php-settings/bootstrap.php') {
             array_unshift($links, $settings_link);
+            // array_unshift($links, '<a target="_blank" href="https://www.buymeacoffee.com/cyclonecode">' . __('Support', self::TEXT_DOMAIN) . '</a>');
+            // array_unshift($links, '<a target="_blank" href="https://wordpress.org/support/plugin/custom-php-settings/reviews/?rate=5#new-post">' . __('Rate', self::TEXT_DOMAIN) . '</a>');
         }
 
         return $links;
+    }
+    /**
+     * Filters the array of row meta for each plugin in the Plugins list table.
+     *
+     * @param string[] $plugin_meta An array of the plugin's metadata.
+     * @param string   $plugin_file Path to the plugin file relative to the plugins directory.
+     * @return string[] An array of the plugin's metadata.
+     */
+    public function filterPluginRowMeta(array $plugin_meta, $plugin_file)
+    {
+        if ($plugin_file !== 'custom-php-settings/bootstrap.php') {
+            return $plugin_meta;
+        }
+
+        $plugin_meta[] = sprintf(
+            '<a target="_blank" href="%1$s"><span class="dashicons dashicons-star-filled" aria-hidden="true" style="font-size:14px;line-height:1.3"></span>%2$s</a>',
+            'https://www.buymeacoffee.com/cyclonecode',
+            esc_html_x('Sponsor', 'verb', self::TEXT_DOMAIN)
+        );
+        $plugin_meta[] = sprintf(
+            '<a target="_blank" href="%1$s"><span class="dashicons dashicons-thumbs-up" aria-hidden="true" style="font-size:14px;line-height:1.3"></span>%2$s</a>',
+            'https://wordpress.org/support/plugin/custom-php-settings/reviews/?rate=5#new-post',
+            esc_html_x('Rate', 'verb', self::TEXT_DOMAIN)
+        );
+        $plugin_meta[] = sprintf(
+            '<a target="_blank" href="%1$s"><span class="dashicons dashicons-editor-help" aria-hidden="true" style="font-size:14px;line-height:1.3"></span>%2$s</a>',
+            'https://wordpress.org/support/plugin/custom-php-settings/support',
+            esc_html_x('Support', 'verb', self::TEXT_DOMAIN)
+        );
+
+        return $plugin_meta;
     }
 
     /**
