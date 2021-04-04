@@ -2,8 +2,8 @@
 
 namespace CustomPhpSettings\Backend;
 
-use Cyclonecode\Plugin\Singleton;
-use Cyclonecode\Plugin\Settings;
+use CustomPhpSettings\Plugin\Singleton;
+use CustomPhpSettings\Plugin\Settings;
 
 class Backend extends Singleton
 {
@@ -174,6 +174,7 @@ class Backend extends Singleton
             <h3><?php _e('Thank you for using Custom PHP Settings!', self::TEXT_DOMAIN); ?></h3>
             <p><?php echo sprintf(__('If you use and enjoy Custom PHP Settings, I would be really grateful if you could give it a positive review at <a href="%s" target="_blank">Wordpress.org</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/reviews/?rate=5#new-post'); ?></p>
             <p><?php _e('Doing this would help me keeping the plugin free and up to date.', self::TEXT_DOMAIN); ?></p>
+            <p><?php _e('Also, if you would like to support me you can always buy me a cup of coffee at:', self::TEXT_DOMAIN); ?> <a target="_blank" href="https://www.buymeacoffee.com/cyclonecode">https://www.buymeacoffee.com/cyclonecode</a></p>
             <p><?php _e('Thank you very much!', self::TEXT_DOMAIN); ?></p>
         </div>
         <?php
@@ -189,6 +190,7 @@ class Backend extends Singleton
             <h3><?php _e('Do you have any feedback or need support?', self::TEXT_DOMAIN); ?></h3>
             <p><?php echo sprintf(__('If you have any request for improvement or just need some help. Do not hesitate to open a ticket in the <a href="%s" target="_blank">support section</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/#new-topic-0'); ?></p>
             <p><?php echo sprintf(__('I can also be reached by email at <a href="%s">%s</a>', self::TEXT_DOMAIN), 'mailto:cyclonecode.help@gmail.com?subject=Custom PHP Settings Support', 'cyclonecode.help@gmail.com'); ?></p>
+            <p><?php echo sprintf(__('There is also a slack channel that you can <a target="_blank" href="%s">join</a>.', self::TEXT_DOMAIN), 'https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ'); ?></p>
             <p><?php _e('I hope you will have an awesome day!', self::TEXT_DOMAIN); ?></p>
         </div>
         <?php
@@ -212,6 +214,7 @@ class Backend extends Singleton
                 'cookie-vars' => __('COOKIE Variables', self::TEXT_DOMAIN),
                 'server-vars' => __('SERVER Variables', self::TEXT_DOMAIN),
                 'env-vars' => __('ENV Variables', self::TEXT_DOMAIN),
+                'status' => __('Status', self::TEXT_DOMAIN),
         );
         if ($this->currentTab === 'info' && !empty($this->currentSection)) {
             $title = ' | ' . $sectionText[$this->currentSection];
@@ -242,8 +245,6 @@ class Backend extends Singleton
             '</a>';
         if ($file === 'custom-php-settings/bootstrap.php') {
             array_unshift($links, $settings_link);
-            // array_unshift($links, '<a target="_blank" href="https://www.buymeacoffee.com/cyclonecode">' . __('Support', self::TEXT_DOMAIN) . '</a>');
-            // array_unshift($links, '<a target="_blank" href="https://wordpress.org/support/plugin/custom-php-settings/reviews/?rate=5#new-post">' . __('Rate', self::TEXT_DOMAIN) . '</a>');
         }
 
         return $links;
@@ -273,7 +274,7 @@ class Backend extends Singleton
         );
         $plugin_meta[] = sprintf(
             '<a target="_blank" href="%1$s"><span class="dashicons dashicons-editor-help" aria-hidden="true" style="font-size:14px;line-height:1.3"></span>%2$s</a>',
-            'https://wordpress.org/support/plugin/custom-php-settings/support',
+            'https://wordpress.org/support/plugin/custom-php-settings/#new-topic-0',
             esc_html_x('Support', 'verb', self::TEXT_DOMAIN)
         );
 
@@ -674,14 +675,15 @@ class Backend extends Singleton
     protected function validSetting($setting)
     {
         $iniSettings = array_keys($this->getIniSettings());
-        $setting = explode('=', $setting);
+        $setting = explode('=', preg_replace('/("[^"\r\n]+")|\s*/', '\1', html_entity_decode($setting)));
+
         if (count($setting) === 1) {
             if (strlen($setting[0]) === 0) {
                 // This is a blank line.
-                return 1;
+                return 2;
             } elseif ($setting[0][0] === '#') {
                 // This is a comment.
-                return 1;
+                return 2;
             } elseif (in_array($setting[0], $iniSettings)) {
                 /* translators: %s: Name of PHP setting */
                 $this->addSettingsMessage(sprintf(__('%s must be in the format: key=value', self::TEXT_DOMAIN), $setting[0]) . '<br />');
@@ -718,8 +720,14 @@ class Backend extends Singleton
                 );
                 $raw_settings = array_map('trim', explode(PHP_EOL, trim($raw_settings)));
                 foreach ($raw_settings as $key => $value) {
-                    if ($this->validSetting($value) > 0) {
-                        $settings[$key] = str_replace(';', '', $value);
+                    if (($type = $this->validSetting($value)) > 0) {
+                        if ($type === 1) {
+                            // Remove whitespaces in everything but quotes.
+                            $setting = explode('=', preg_replace('/("[^"\r\n]+")|\s*/', '\1', html_entity_decode($value)));
+                            $settings[$key] = str_replace(';', '', implode('=', $setting));
+                        } else {
+                            $settings[$key] = str_replace(';', '', $value);
+                        }
                     }
                 }
                 $this->settings->set('php_settings', $settings);
@@ -743,7 +751,6 @@ class Backend extends Singleton
                     'trim_whitespaces',
                     FILTER_VALIDATE_BOOLEAN
                 ));
-                $this->settings->save();
                 $this->settings->save();
 
                 if ($this->settings->get('update_config')) {

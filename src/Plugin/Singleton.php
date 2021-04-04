@@ -1,6 +1,6 @@
 <?php
 
-namespace Cyclonecode\Plugin;
+namespace CustomPhpSettings\Plugin;
 
 abstract class Singleton
 {

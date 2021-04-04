@@ -39,6 +39,9 @@ if (strchr($variables_order, 'E') && !empty($_ENV)) {
         'label' => __('ENV', self::TEXT_DOMAIN),
     );
 }
+$tabs['status'] = array(
+  'label' => __('Status', self::TEXT_DOMAIN),
+);
 ?>
 <h2 class="nav-tab-wrapper">
     <?php foreach ($tabs as $key => $item) : ?>

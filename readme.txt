@@ -5,7 +5,7 @@ Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,9 @@ Fixes a bug where the plugin could not be deleted.
 
 = 1.4.1 =
 - Add version to scripts.
-- Bump cyclonecode/plugin to 1.0.2.
+- Bump cyclonecode/plugin to 1.0.6.
+- Remove composer plugin package.
+- Add status page.
+- Remove whitespaces in settings.
 - Add sponsor, rate and support links.
 - Refactor tabs.
