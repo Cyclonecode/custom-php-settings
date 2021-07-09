@@ -23,3 +23,16 @@
 .custom-php-settings-table td {
     width: 33%;
 }
+/* status page */
+#status-form textarea {
+    font-family: monospace;
+    width: 100%;
+    margin: 0;
+    height: 300px;
+    padding: 20px;
+    border-radius: 0;
+    resize: none;
+    font-size: 12px;
+    line-height: 20px;
+    outline: 0;
+}

@@ -120,3 +120,4 @@ Fixes a bug where the plugin could not be deleted.
 == Changelog ==
 
 - Add cyclonecode/plugin to source.
+- Improve status page.

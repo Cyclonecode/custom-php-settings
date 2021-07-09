@@ -12,6 +12,7 @@ class Backend extends Singleton
     const TEXT_DOMAIN = 'custom-php-settings';
     const PARENT_MENU_SLUG = 'tools.php';
     const MENU_SLUG = 'custom-php-settings';
+    const MARKER = 'CUSTOM PHP SETTINGS';
 
     /**
      *
@@ -175,6 +176,7 @@ class Backend extends Singleton
             <p><?php echo sprintf(__('If you use and enjoy Custom PHP Settings, I would be really grateful if you could give it a positive review at <a href="%s" target="_blank">Wordpress.org</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/reviews/?rate=5#new-post'); ?></p>
             <p><?php _e('Doing this would help me keeping the plugin free and up to date.', self::TEXT_DOMAIN); ?></p>
             <p><?php _e('Also, if you would like to support me you can always buy me a cup of coffee at:', self::TEXT_DOMAIN); ?> <a target="_blank" href="https://www.buymeacoffee.com/cyclonecode">https://www.buymeacoffee.com/cyclonecode</a></p>
+            <p><?php _e('Please leave your e-mail address when supporting me with a cup of coffee and will be sure to add you to the supporter section in the readme.', self::TEXT_DOMAIN); ?></p>
             <p><?php _e('Thank you very much!', self::TEXT_DOMAIN); ?></p>
         </div>
         <?php
@@ -435,7 +437,7 @@ class Backend extends Singleton
         $settings = new Settings(self::SETTINGS_NAME);
         if ($settings->get('restore_config')) {
             $configFile = self::getConfigFilePath();
-            self::addMarker($configFile, 'CUSTOM PHP SETTINGS', array(), self::getCGIMode() ? ';' : '#');
+            self::addMarker($configFile, self::MARKER, array(), self::getCGIMode() ? ';' : '#');
         }
     }
 
@@ -633,7 +635,7 @@ class Backend extends Singleton
         /* translators: %s: Name of configuration file */
         $message = sprintf(__('Settings updated and stored in %s.', self::TEXT_DOMAIN), $configFile);
         $this->addSettingsMessage($message, 'updated');
-        self::addMarker($configFile, 'CUSTOM PHP SETTINGS', $section, self::getCGIMode() ? ';' : '#');
+        self::addMarker($configFile, self::MARKER, $section, self::getCGIMode() ? ';' : '#');
     }
 
     /**
@@ -673,7 +675,7 @@ class Backend extends Singleton
      *
      * @return int
      */
-    protected function validSetting($setting)
+    protected function isValidSetting($setting)
     {
         $iniSettings = array_keys($this->getIniSettings());
         $setting = explode('=', preg_replace('/("[^"\r\n]+")|\s*/', '\1', html_entity_decode($setting)));
@@ -691,6 +693,7 @@ class Backend extends Singleton
                 return -2;
             }
         } elseif (count($setting) === 2 && in_array($setting[0], $iniSettings)) {
+            // This is a valid setting.
             return 1;
         }
         /* translators: %s: Name of PHP setting */
@@ -722,7 +725,7 @@ class Backend extends Singleton
             );
             $raw_settings = array_map('trim', explode(PHP_EOL, trim($raw_settings)));
             foreach ($raw_settings as $key => $value) {
-                if (($type = $this->validSetting($value)) > 0) {
+                if (($type = $this->isValidSetting($value)) > 0) {
                     if ($type === 1) {
                         // Remove whitespaces in everything but quotes.
                         $setting = explode('=', preg_replace('/("[^"\r\n]+")|\s*/', '\1', html_entity_decode($value)));
