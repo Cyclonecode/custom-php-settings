@@ -1,6 +1,6 @@
 <?php
 
-namespace CustomPhpSettings\Plugin;
+namespace CustomPhpSettings\Plugin\Settings;
 
 class Settings implements \IteratorAggregate, \Countable, \ArrayAccess
 {

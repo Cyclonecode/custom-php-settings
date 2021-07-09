@@ -2,12 +2,12 @@
 
 namespace CustomPhpSettings\Backend;
 
-use CustomPhpSettings\Plugin\Singleton;
-use CustomPhpSettings\Plugin\Settings;
+use CustomPhpSettings\Plugin\Common\Singleton;
+use CustomPhpSettings\Plugin\Settings\Settings;
 
 class Backend extends Singleton
 {
-    const VERSION = '1.4.1';
+    const VERSION = '1.4.2';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
     const PARENT_MENU_SLUG = 'tools.php';
@@ -367,8 +367,9 @@ class Backend extends Singleton
             foreach ($defaults as $key => $value) {
                 $this->settings->add($key, $value);
             }
-            $this->settings->set('version', self::VERSION);
-            $this->settings->save();
+            $this->settings
+                ->set('version', self::VERSION)
+                ->save();
         }
     }
 
@@ -552,7 +553,7 @@ class Backend extends Singleton
         $start_marker = "$comment BEGIN {$marker}";
         $end_marker = "$comment END {$marker}";
 
-        $fp = fopen($filename, 'r+');
+        $fp = @fopen($filename, 'r+');
         if (!$fp) {
             return false;
         }
@@ -702,68 +703,68 @@ class Backend extends Singleton
      */
     public function saveSettings()
     {
+        // Verify nonce and referer.
+        check_admin_referer('custom-php-settings-action', 'custom-php-settings-nonce');
+
+        // Validate so user has correct privileges.
+        if (!current_user_can($this->capability)) {
+            die(__('You are not allowed to perform this action.', self::TEXT_DOMAIN));
+        }
+
         // Check if settings form is submitted.
         if (filter_input(INPUT_POST, 'custom-php-settings', FILTER_SANITIZE_STRING)) {
-            // Validate so user has correct privileges.
-            if (!current_user_can($this->capability)) {
-                die(__('You are not allowed to perform this action.', self::TEXT_DOMAIN));
-            }
-
-            // Verify nonce and referer.
-            if (check_admin_referer('custom-php-settings-action', 'custom-php-settings-nonce')) {
-                // Filter and sanitize form values.
-                $settings = array();
-                $raw_settings = filter_input(
-                    INPUT_POST,
-                    'php_settings',
-                    FILTER_SANITIZE_STRING
-                );
-                $raw_settings = array_map('trim', explode(PHP_EOL, trim($raw_settings)));
-                foreach ($raw_settings as $key => $value) {
-                    if (($type = $this->validSetting($value)) > 0) {
-                        if ($type === 1) {
-                            // Remove whitespaces in everything but quotes.
-                            $setting = explode('=', preg_replace('/("[^"\r\n]+")|\s*/', '\1', html_entity_decode($value)));
-                            $settings[$key] = str_replace(';', '', implode('=', $setting));
-                        } else {
-                            $settings[$key] = str_replace(';', '', $value);
-                        }
+            // Filter and sanitize form values.
+            $settings = array();
+            $raw_settings = filter_input(
+                INPUT_POST,
+                'php_settings',
+                FILTER_SANITIZE_STRING
+            );
+            $raw_settings = array_map('trim', explode(PHP_EOL, trim($raw_settings)));
+            foreach ($raw_settings as $key => $value) {
+                if (($type = $this->validSetting($value)) > 0) {
+                    if ($type === 1) {
+                        // Remove whitespaces in everything but quotes.
+                        $setting = explode('=', preg_replace('/("[^"\r\n]+")|\s*/', '\1', html_entity_decode($value)));
+                        $settings[$key] = str_replace(';', '', implode('=', $setting));
+                    } else {
+                        $settings[$key] = str_replace(';', '', $value);
                     }
                 }
-                $this->settings->set('php_settings', $settings);
-                $this->settings->set('update_config', filter_input(
-                    INPUT_POST,
-                    'update_config',
-                    FILTER_VALIDATE_BOOLEAN
-                ));
-                $this->settings->set('restore_config', filter_input(
-                    INPUT_POST,
-                    'restore_config',
-                    FILTER_VALIDATE_BOOLEAN
-                ));
-                $this->settings->set('trim_comments', filter_input(
-                    INPUT_POST,
-                    'trim_comments',
-                    FILTER_VALIDATE_BOOLEAN
-                ));
-                $this->settings->set('trim_whitespaces', filter_input(
-                    INPUT_POST,
-                    'trim_whitespaces',
-                    FILTER_VALIDATE_BOOLEAN
-                ));
-                $this->settings->save();
-
-                if ($this->settings->get('update_config')) {
-                    $this->updateConfigFile();
-                }
-                // Check if we should activate the support notification.
-                if (($notice = $this->getNoticeByName('support')) && $notice['time'] === 0) {
-                    $this->resetNotice($notice['id']);
-                }
-
-                set_transient('cps_settings_errors', get_settings_errors());
-                wp_safe_redirect(admin_url(self::PARENT_MENU_SLUG . '?page=' . self::MENU_SLUG));
             }
+            $this->settings->set('php_settings', $settings);
+            $this->settings->set('update_config', filter_input(
+                INPUT_POST,
+                'update_config',
+                FILTER_VALIDATE_BOOLEAN
+            ));
+            $this->settings->set('restore_config', filter_input(
+                INPUT_POST,
+                'restore_config',
+                FILTER_VALIDATE_BOOLEAN
+            ));
+            $this->settings->set('trim_comments', filter_input(
+                INPUT_POST,
+                'trim_comments',
+                FILTER_VALIDATE_BOOLEAN
+            ));
+            $this->settings->set('trim_whitespaces', filter_input(
+                INPUT_POST,
+                'trim_whitespaces',
+                FILTER_VALIDATE_BOOLEAN
+            ));
+            $this->settings->save();
+
+            if ($this->settings->get('update_config')) {
+                $this->updateConfigFile();
+            }
+            // Check if we should activate the support notification.
+            if (($notice = $this->getNoticeByName('support')) && $notice['time'] === 0) {
+                $this->resetNotice($notice['id']);
+            }
+
+            set_transient('cps_settings_errors', get_settings_errors());
+            wp_safe_redirect(admin_url(self::PARENT_MENU_SLUG . '?page=' . self::MENU_SLUG));
         }
     }
 

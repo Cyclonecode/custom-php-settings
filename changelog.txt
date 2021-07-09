@@ -1,3 +1,12 @@
+= 1.4.1 =
+- Add version to scripts.
+- Bump cyclonecode/plugin to 1.0.6.
+- Remove composer plugin package.
+- Add status page.
+- Remove whitespaces in settings.
+- Add sponsor, rate and support links.
+- Refactor tabs.
+
 = 1.4.0  =
 - Add PHP extension version.
 - Add translation hints.

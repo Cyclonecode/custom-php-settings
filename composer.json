@@ -1,7 +1,7 @@
 {
     "name": "cyclonecode/custom-php-settings",
     "type": "wordpress-plugin",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "keywords": [
         "wordpress",
         "plugin",
@@ -22,7 +22,7 @@
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5.8"
     },
-    "time": "2021-04-04",
+    "time": "2021-07-09",
     "license": "GPL-2.0-or-later",
     "readme": "readme.txt",
     "homepage": "https://wordpress.org/plugins/custom-php-settings/",

@@ -1,6 +1,6 @@
 <?php
 
-namespace CustomPhpSettings\Plugin;
+namespace CustomPhpSettings\Plugin\Common;
 
 abstract class Singleton
 {
@@ -10,7 +10,7 @@ abstract class Singleton
     protected static $instance = array();
 
     /**
-     * @return \Cyclonecode\Plugin\Singleton|null
+     * @return \CustomPhpSettings\Plugin\Common\Singleton|null
      */
     final public static function getInstance()
     {

@@ -3,7 +3,7 @@ Contributors: cyclonecode
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PBTHN3L67QA2S&source=url&lc=US&item_name=Custom+PHP+Settings
 Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
-Tested up to: 5.6
+Tested up to: 5.7.1
 Requires PHP: 5.4
 Stable tag: 1.4.1
 License: GPLv2 or later
@@ -119,11 +119,4 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.4.1 =
-- Add version to scripts.
-- Bump cyclonecode/plugin to 1.0.6.
-- Remove composer plugin package.
-- Add status page.
-- Remove whitespaces in settings.
-- Add sponsor, rate and support links.
-- Refactor tabs.
+- Add cyclonecode/plugin to source.
