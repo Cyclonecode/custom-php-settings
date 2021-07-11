@@ -1,7 +1,8 @@
 'use strict';
-(function ($) {
-    $(function () {
-        if ($('#code_editor_custom_php_settings').length) {
+(($) => {
+    $(() => {
+        const editor = $('#code_editor_custom_php_settings')
+        if (editor.length) {
             let editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
             editorSettings.codemirror = _.extend(
                 {},
@@ -12,7 +13,7 @@
                     mode: 'shell',
                 }
             );
-            let editor = wp.codeEditor.initialize($('#code_editor_custom_php_settings'), editorSettings);
+            wp.codeEditor.initialize(editor, editorSettings);
         }
     });
 })(jQuery);

@@ -23,6 +23,21 @@
 .custom-php-settings-table td {
     width: 33%;
 }
+/* notifications */
+.custom-php-settings-notice {
+    position: relative;
+    overflow: hidden;
+}
+.custom-php-settings-notice img {
+    opacity: 0.1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    /*filter: grayscale(100%);*/
+    transform: scaleX(-1);
+}
 /* status page */
 #status-form textarea {
     font-family: monospace;

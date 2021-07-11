@@ -43,6 +43,7 @@ $tabs['status'] = array(
   'label' => __('Status', self::TEXT_DOMAIN),
 );
 ?>
+<h2></h2>
 <h2 class="nav-tab-wrapper">
     <?php foreach ($tabs as $key => $item) : ?>
         <?php $active = ($key === $this->getCurrentTab() ? ' nav-tab-active' : ''); ?>

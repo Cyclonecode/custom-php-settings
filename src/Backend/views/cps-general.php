@@ -10,7 +10,6 @@ if (isset($php_settings)) {
 <div class="wrap">
     <?php do_action('custom_php_settings_admin_notices'); ?>
     <?php settings_errors(); ?>
-    <h1></h1>
     <?php require_once('cps-tabs.php'); ?>
     <form action="<?php echo admin_url('admin-post.php'); ?>" method="POST">
     <?php wp_nonce_field('custom-php-settings-action', 'custom-php-settings-nonce'); ?>

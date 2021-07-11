@@ -1,11 +1,11 @@
 === Custom PHP Settings ===
 Contributors: cyclonecode
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PBTHN3L67QA2S&source=url&lc=US&item_name=Custom+PHP+Settings
+Donate link: https://www.buymeacoffee.com/cyclonecode
 Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
-Tested up to: 5.7.1
+Tested up to: 5.7.2
 Requires PHP: 5.4
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,9 @@ php_value variables_order EPCS  <-- Remove
 
 == Frequently Asked Questions ==
 
+= I have saved a setting in the editor but the PHP setting does not reflect this? =
+Make sure so you have checked the *Update configuration file* checkbox beneath the editor.
+
 == Support ==
 
 If you run into any trouble, don’t hesitate to add a new topic under the support section:
@@ -96,8 +99,6 @@ You can also try contacting me on [slack](https://join.slack.com/t/cyclonecode/s
 1. Upload custom-php-settings to the **/wp-content/plugins/** directory,
 2. Activate the plugin through the **Plugins** menu in WordPress.
 3. You can now modify your php settings by going to the settings page located under *wp-admin/tools.php?page=custom-php-settings*.
-
-== Frequently Asked Questions ==
 
 == Upgrade Notice ==
 
@@ -121,3 +122,4 @@ Fixes a bug where the plugin could not be deleted.
 
 - Add cyclonecode/plugin to source.
 - Improve status page.
+- Position admin notices.
