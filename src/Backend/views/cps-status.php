@@ -10,8 +10,10 @@ $pluginSettings = array(
     __('=== Custom PHP Settings ===', self::TEXT_DOMAIN) => '',
 );
 foreach ($settings['php_settings'] as $value) {
-    list($key, $val) = explode('=', $value);
-    $pluginSettings[$key] = $val;
+    if (!empty($value)) {
+        list($key, $val) = explode('=', $value);
+        $pluginSettings[$key] = $val;
+    }
 }
 $phpInfo = array(
     __('System name', self::TEXT_DOMAIN) => php_uname(),
