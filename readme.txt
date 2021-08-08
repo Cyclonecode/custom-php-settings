@@ -3,9 +3,9 @@ Contributors: cyclonecode
 Donate link: https://www.buymeacoffee.com/cyclonecode
 Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
-Tested up to: 5.7.2
+Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,9 @@ Check Server API and do **not** make any changes if using CGI/Fast-CGI.
 = 1.2.6 =
 Fixes a bug where the plugin could not be deleted.
 
+= 1.4.3
+- Fixes a bug on status page when no custom settings has been added.
+
 == Screenshots ==
 
 1. Customize PHP settings from within wordpress administration.
@@ -120,6 +123,5 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-- Add cyclonecode/plugin to source.
-- Improve status page.
-- Position admin notices.
+= 1.4.3
+- Fixes a bug on status page when no custom settings has been added.
