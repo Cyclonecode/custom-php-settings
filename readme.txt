@@ -5,7 +5,7 @@ Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.4.3
+Stable tag: 1.4.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,24 @@ This plugin can be used to customize php settings for you wordpress installation
 The plugin will modify either the **.htaccess** file or **.user.ini** file in order to change the current php settings directly from within the settings page.
 
 Since the configuration file needs to be modified this file **must** be writable for this plugin to work as expected.
+
+= Pro version =
+
+The pro version comes with extended features such as:
+
+- Support to set environment variables in your .htaccess file.
+- Support to enable/disable WP_DEBUG from the configuration page.
+- Enable error logging and set path to log file.
+- Hints for most of the configurable PHP settings.
+- Support to backup your configuration file before applying any changes.
+- Create multiple configurations that can be used to easily switch between different settings.
+- Extended support.
+
+You can get the premium version for only 5 EUR, or by buying me a couple of beers at
+[buymeacoffee](https://www.buymeacoffee.com/cyclonecode). Do not forget to add your email address or other contact
+information, and I will send you a reply with instructions on how to get the premium version.
+
+Please contact me by e-mail at cyclonecode@gmail.com for further instructions on how to get the pro version.
 
 = Apache module =
 
@@ -123,5 +141,6 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.4.3
-- Fixes a bug on status page when no custom settings has been added.
+= 1.4.3.1
+- Minor update for rendering notices.
+- Add note about premium version.

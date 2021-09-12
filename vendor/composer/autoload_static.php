@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit432cd2733b2a2b84b204cd208f05f0f3
+class ComposerStaticInitfa749dbc1aa9625a43ec88421ea9a1af
 {
     public static $prefixLengthsPsr4 = array (
         'C' => 
@@ -24,17 +24,15 @@ class ComposerStaticInit432cd2733b2a2b84b204cd208f05f0f3
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'CustomPhpSettings\\Backend\\Backend' => __DIR__ . '/../..' . '/src/Backend/Backend.php',
         'CustomPhpSettings\\Plugin\\Common\\Singleton' => __DIR__ . '/../..' . '/src/Plugin/Common/Singleton.php',
-        'CustomPhpSettings\\Plugin\\Settings' => __DIR__ . '/../..' . '/src/Plugin/Settings.php',
         'CustomPhpSettings\\Plugin\\Settings\\Settings' => __DIR__ . '/../..' . '/src/Plugin/Settings/Settings.php',
-        'CustomPhpSettings\\Plugin\\Singleton' => __DIR__ . '/../..' . '/src/Plugin/Singleton.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit432cd2733b2a2b84b204cd208f05f0f3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit432cd2733b2a2b84b204cd208f05f0f3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit432cd2733b2a2b84b204cd208f05f0f3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfa749dbc1aa9625a43ec88421ea9a1af::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfa749dbc1aa9625a43ec88421ea9a1af::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitfa749dbc1aa9625a43ec88421ea9a1af::$classMap;
 
         }, null, ClassLoader::class);
     }

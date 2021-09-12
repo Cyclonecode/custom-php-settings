@@ -28,6 +28,10 @@
     position: relative;
     overflow: hidden;
 }
+.custom-php-settings-notice ul {
+    list-style-type: square;
+    padding-left: 2em;
+}
 .custom-php-settings-notice img {
     opacity: 0.1;
     position: absolute;

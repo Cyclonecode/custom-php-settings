@@ -9,7 +9,5 @@ return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'CustomPhpSettings\\Backend\\Backend' => $baseDir . '/src/Backend/Backend.php',
     'CustomPhpSettings\\Plugin\\Common\\Singleton' => $baseDir . '/src/Plugin/Common/Singleton.php',
-    'CustomPhpSettings\\Plugin\\Settings' => $baseDir . '/src/Plugin/Settings.php',
     'CustomPhpSettings\\Plugin\\Settings\\Settings' => $baseDir . '/src/Plugin/Settings/Settings.php',
-    'CustomPhpSettings\\Plugin\\Singleton' => $baseDir . '/src/Plugin/Singleton.php',
 );

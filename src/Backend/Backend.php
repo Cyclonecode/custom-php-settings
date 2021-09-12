@@ -7,7 +7,7 @@ use CustomPhpSettings\Plugin\Settings\Settings;
 
 class Backend extends Singleton
 {
-    const VERSION = '1.4.3';
+    const VERSION = '1.4.3.1';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
     const PARENT_MENU_SLUG = 'tools.php';
@@ -136,18 +136,6 @@ class Backend extends Singleton
     }
 
     /**
-     * Render any notifications.
-     */
-    public function renderNotices()
-    {
-        foreach ($this->settings->get('notes') as $note) {
-            if (!$note['dismissed'] || ($note['dismissed'] && !$note['persistent'] && time() - $note['time'] > 30 * 24 * 60 * 60)) {
-                echo call_user_func(array($this, $note['callback']));
-            }
-        }
-    }
-
-    /**
      * Ajax handler for dismissing notifications.
      */
     public function doDismissNotice()
@@ -166,19 +154,64 @@ class Backend extends Singleton
     }
 
     /**
+     * Render any notifications.
+     */
+    public function renderNotices()
+    {
+        $notes = $this->settings->get('notes');
+        usort($notes, function ($a, $b) {
+            return $a['weight'] === $b['weight'] ? 0 : $a['weight'] - $b['weight'];
+        });
+        foreach ($notes as $note) {
+            if (is_callable([$this, $note['callback']]) && (!$note['dismissed'] || ($note['dismissed'] && !$note['persistent'] && time() - $note['time'] > 30 * 24 * 60 * 60))) {
+                ?>
+                <div id="note-<?php echo $note['id']; ?>" class="custom-php-settings-notice notice notice-<?php echo $note['type']; ?> is-dismissible">
+                <?php echo call_user_func(array($this, $note['callback'])); ?>
+                </div>
+                <?php
+            }
+        }
+    }
+
+    /**
+     * Adds premium admin notification.
+     */
+    public function addProNotice()
+    {
+        ?>
+        <h3><?php _e('PRO version', self::TEXT_DOMAIN); ?></h3>
+        <p><?php echo __('There is now a <b>Pro</b> version of this plugin with extended features such as:', self::TEXT_DOMAIN); ?></p>
+        <div>
+            <ul>
+                <li><?php _e('Set environment variables in your .htaccess file.', self::TEXT_DOMAIN); ?></li>
+                <li><?php _e('Enable WP_DEBUG from configuration page.', self::TEXT_DOMAIN); ?></li>
+                <li><?php _e('Enable error reporting and specify path to log file.', self::TEXT_DOMAIN); ?></li>
+                <li><?php _e('Hints for most of the configurable PHP settings.', self::TEXT_DOMAIN); ?></li>
+                <li><?php _e('Backup your configuration file before applying any changes.', self::TEXT_DOMAIN); ?></li>
+                <li><?php _e('Create multiple configurations that can be used to easily switch between different settings.', self::TEXT_DOMAIN); ?></li>
+                <li><?php _e('Extended support.', self::TEXT_DOMAIN); ?></li>
+            </ul>
+        </div>
+        <p><?php echo sprintf(__('The Pro version only costs 5 EUR, or you can simply buy me a beer at <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', self::TEXT_DOMAIN), 'https://www.buymeacoffee.com/cyclonecode', 'buymeacoffee'); ?>.</p>
+        <p><?php echo sprintf(__('To get more information about the Pro version, please send me an email at <a href="mailto:cyclonecode@gmail.com?subject=%s" target="_blank" rel="noopener noreferrer">cyclonecode@gmail.com</a>, you can also contact me at my <a href="%s" target="_blank" rel="noopener noreferrer">slack channel</a>.', self::TEXT_DOMAIN), 'Custom%20PHP%20Settings%20Pro', 'https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ'); ?></p>
+        <p><?php echo __('In case you bought me a beer =) do not forget to add your email address or other contact information, and I will send you instructions on how to get the Pro version.'); ?></p>
+        <?php
+    }
+
+    /**
      * Adds review admin notification.
      */
     public function addReviewNotice()
     {
         ?>
-        <div id="note-1" class="custom-php-settings-notice notice-info notice is-dismissible inline">
-            <img src="<?php echo plugin_dir_url(__FILE__); ?>assets/buymeacoffee.png" alt="buymeacoffee" />
-            <h3><?php _e('Thank you for using Custom PHP Settings!', self::TEXT_DOMAIN); ?></h3>
-            <p><?php echo sprintf(__('If you use and enjoy Custom PHP Settings, I would be really grateful if you could give it a positive review at <a href="%s" target="_blank">Wordpress.org</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/reviews/?rate=5#new-post'); ?></p>
-            <p><?php _e('Doing this would help me keeping the plugin free and up to date.', self::TEXT_DOMAIN); ?></p>
-            <p><?php _e('If you are feeling generous and would like to support me, you can always buy me a coffee at:', self::TEXT_DOMAIN); ?> <a target="_blank" href="https://www.buymeacoffee.com/cyclonecode">https://www.buymeacoffee.com/cyclonecode</a></p>
-            <p><?php _e('Please make sure to leave your e-mail address, and I will make sure to add you to the supporter section in the readme =)', self::TEXT_DOMAIN); ?></p>
-            <p><?php _e('Thank you very much!', self::TEXT_DOMAIN); ?></p>
+        <img src="<?php echo plugin_dir_url(__FILE__); ?>assets/buymeacoffee.png" alt="buymeacoffee" />
+        <div style="position: relative; z-index: 1000">
+        <h3><?php _e('Thank you for using Custom PHP Settings!', self::TEXT_DOMAIN); ?></h3>
+        <p><?php echo sprintf(__('If you use and enjoy Custom PHP Settings, I would be really grateful if you could give it a positive review at <a href="%s" target="_blank">Wordpress.org</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/reviews/?rate=5#new-post'); ?></p>
+        <p><?php _e('Doing this would help me keeping the plugin free and up to date.', self::TEXT_DOMAIN); ?></p>
+        <p><?php _e('If you are feeling generous and would like to support me, you can always buy me a coffee at:', self::TEXT_DOMAIN); ?> <a target="_blank" href="https://www.buymeacoffee.com/cyclonecode">https://www.buymeacoffee.com/cyclonecode</a></p>
+        <p><?php _e('Please make sure to leave your e-mail address, and I will make sure to add you to the supporter section in the readme =)', self::TEXT_DOMAIN); ?></p>
+        <p><?php _e('Thank you very much!', self::TEXT_DOMAIN); ?></p>
         </div>
         <?php
     }
@@ -189,13 +222,11 @@ class Backend extends Singleton
     public function addSupportNotice()
     {
         ?>
-        <div id="note-2" class="custom-php-settings-notice notice notice-info is-dismissible" style="position: relative;">
-            <h3><?php _e('Do you have any feedback or need support?', self::TEXT_DOMAIN); ?></h3>
-            <p><?php echo sprintf(__('If you have any requests for improvement or just need some help. Do not hesitate to open a ticket in the <a href="%s" target="_blank">support section</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/#new-topic-0'); ?></p>
-            <p><?php echo sprintf(__('I can also be reached by email at <a href="%s">%s</a>', self::TEXT_DOMAIN), 'mailto:cyclonecode.help@gmail.com?subject=Custom PHP Settings Support', 'cyclonecode.help@gmail.com'); ?></p>
-            <p><?php echo sprintf(__('There is also a slack channel that you can <a target="_blank" href="%s">join</a>.', self::TEXT_DOMAIN), 'https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ'); ?></p>
-            <p><?php _e('I hope you will have an awesome day!', self::TEXT_DOMAIN); ?></p>
-        </div>
+        <h3><?php _e('Do you have any feedback or need support?', self::TEXT_DOMAIN); ?></h3>
+        <p><?php echo sprintf(__('If you have any requests for improvement or just need some help. Do not hesitate to open a ticket in the <a href="%s" target="_blank">support section</a>.', self::TEXT_DOMAIN), 'https://wordpress.org/support/plugin/custom-php-settings/#new-topic-0'); ?></p>
+        <p><?php echo sprintf(__('I can also be reached by email at <a href="%s">%s</a>', self::TEXT_DOMAIN), 'mailto:cyclonecode.help@gmail.com?subject=Custom PHP Settings Support', 'cyclonecode.help@gmail.com'); ?></p>
+        <p><?php echo sprintf(__('There is also a slack channel that you can <a target="_blank" href="%s">join</a>.', self::TEXT_DOMAIN), 'https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ'); ?></p>
+        <p><?php _e('I hope you will have an awesome day!', self::TEXT_DOMAIN); ?></p>
         <?php
     }
 
@@ -355,7 +386,18 @@ class Backend extends Singleton
                         'callback' => 'addSupportNotice',
                         'dismissed' => true,
                         'dismissible' => false,
-                    )
+                    ),
+                    'support' => array(
+                        'id' => 3,
+                        'weight' => 0,
+                        'persistent' => true,
+                        'time' => 0,
+                        'type' => 'warning',
+                        'name' => 'support',
+                        'callback' => 'addProNotice',
+                        'dismissed' => false,
+                        'dismissible' => false,
+                    ),
                 )
             );
             $notes = $this->settings->get('notes');

@@ -10,7 +10,7 @@ abstract class Singleton
     protected static $instance = array();
 
     /**
-     * @return \CustomPhpSettings\Plugin\Common\Singleton|null
+     * @return mixed
      */
     final public static function getInstance()
     {
@@ -34,6 +34,14 @@ abstract class Singleton
      */
     final private function __clone()
     {
+    }
+
+    /**
+     * @throws \Exception
+     */
+    final public function __wakeup()
+    {
+        throw new \Exception('Cannot unserialize a singleton');
     }
 
     protected function init()
