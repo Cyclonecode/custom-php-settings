@@ -1,3 +1,7 @@
+= 1.4.3.1
+- Minor update for rendering notices.
+- Add note about premium version.
+
 = 1.4.3
 - Fixes a bug on status page when no custom settings has been added.
 

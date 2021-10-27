@@ -7,7 +7,7 @@ use CustomPhpSettings\Plugin\Settings\Settings;
 
 class Backend extends Singleton
 {
-    const VERSION = '1.4.3.1';
+    const VERSION = '1.4.3.2';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
     const PARENT_MENU_SLUG = 'tools.php';
@@ -192,9 +192,9 @@ class Backend extends Singleton
                 <li><?php _e('Extended support.', self::TEXT_DOMAIN); ?></li>
             </ul>
         </div>
-        <p><?php echo sprintf(__('The Pro version only costs 5 EUR, or you can simply buy me a beer at <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', self::TEXT_DOMAIN), 'https://www.buymeacoffee.com/cyclonecode', 'buymeacoffee'); ?>.</p>
+        <p><?php echo sprintf(__('The Pro version only costs 15 EUR annually, or you can simply buy me a beer at <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', self::TEXT_DOMAIN), 'https://www.buymeacoffee.com/cyclonecode', 'buymeacoffee'); ?>.</p>
         <p><?php echo sprintf(__('To get more information about the Pro version, please send me an email at <a href="mailto:cyclonecode@gmail.com?subject=%s" target="_blank" rel="noopener noreferrer">cyclonecode@gmail.com</a>, you can also contact me at my <a href="%s" target="_blank" rel="noopener noreferrer">slack channel</a>.', self::TEXT_DOMAIN), 'Custom%20PHP%20Settings%20Pro', 'https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ'); ?></p>
-        <p><?php echo __('In case you bought me a beer =) do not forget to add your email address or other contact information, and I will send you instructions on how to get the Pro version.'); ?></p>
+        <p><?php echo __('In case you bought me a couple of beers =) do not forget to add your email address or other contact information, and I will send you instructions on how to get the Pro version.'); ?></p>
         <?php
     }
 

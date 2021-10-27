@@ -5,7 +5,7 @@ Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.4.3.1
+Stable tag: 1.4.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,9 +31,10 @@ The pro version comes with extended features such as:
 - Create multiple configurations that can be used to easily switch between different settings.
 - Extended support.
 
-You can get the premium version for only 5 EUR, or by buying me a couple of beers at
-[buymeacoffee](https://www.buymeacoffee.com/cyclonecode). Do not forget to add your email address or other contact
-information, and I will send you a reply with instructions on how to get the premium version.
+You can get the premium version for only 15 EUR, or by buying me a couple of beers at [buymeacoffee](https://www.buymeacoffee.com/cyclonecode).
+Do not forget to add your email address or other contact information, and I will send you a reply with instructions on how to get the premium version.
+
+The Pro license is valid for a year and can be used on up to three sites.
 
 Please contact me by e-mail at cyclonecode@gmail.com for further instructions on how to get the pro version.
 
@@ -141,6 +142,5 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.4.3.1
-- Minor update for rendering notices.
-- Add note about premium version.
+= 1.4.3.2
+- Update Pro pricing.
