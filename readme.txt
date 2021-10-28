@@ -5,7 +5,7 @@ Tags: php, htaccess, settings, apache, apache2
 Requires at least: 3.1.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.4.3.2
+Stable tag: 1.4.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,11 +13,22 @@ This plugin makes it possible to override php settings.
 
 == Description ==
 
-This plugin can be used to customize php settings for you wordpress installation.
+This plugin can be used to customize php settings for you Wordpress installation.
 
 The plugin will modify either the **.htaccess** file or **.user.ini** file in order to change the current php settings directly from within the settings page.
 
 Since the configuration file needs to be modified this file **must** be writable for this plugin to work as expected.
+
+= Looking for help =
+
+I am currently in the search for someone who would like to help me with something of the following:
+
+- Create a dashboard icon which can be used in the admin menu.
+- Create a banner that would be displayed on the plugins homepage at wordpress.org.
+- Design a nicer and more intuitive admin interface.
+- Create a solid looking icon that can be used on multiple places.
+
+If you would like to help with anything of the above, please do not hesitate and contact me either on slack or by email.
 
 = Pro version =
 
@@ -71,7 +82,7 @@ deny from all
 
 The settings table will display all non-system php settings that can be customized by the plugin. All modified settings will be displayed in red in this table.
 
-Some settings might be displayed in red because they are changed somewhere else, perhaps through a customized php.ini file, by wordpress itself, a plugin or in some other way.
+Some settings might be displayed in red because they are changed somewhere else, perhaps through a customized php.ini file, by Wordpress itself, a plugin or in some other way.
 For instance if you have enabled **WP_DEBUG** in your **wp-config.php** file the **error_reporting** setting will turn red.
 
 If you have questions or perhaps some idea on things that should be added you can also try [slack](https://join.slack.com/t/cyclonecode/shared_invite/zt-6bdtbdab-n9QaMLM~exHP19zFDPN~AQ).
@@ -132,7 +143,7 @@ Fixes a bug where the plugin could not be deleted.
 
 == Screenshots ==
 
-1. Customize PHP settings from within wordpress administration.
+1. Customize PHP settings from within Wordpress administration.
 2. A `.htaccess` file with customized PHP settings.
 3. A table with all php settings that can be customized.
 4. Table displaying information about the current php environment.
@@ -142,5 +153,5 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.4.3.2
-- Update Pro pricing.
+= 1.4.3.3
+- Add plugin and theme information to status page.

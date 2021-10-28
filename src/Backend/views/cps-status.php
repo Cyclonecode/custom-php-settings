@@ -1,5 +1,5 @@
 <?php
-
+// Get plugin information.
 $settings = $this->settings->toOptionsArray();
 $pluginSettings = array(
     __('Version', self::TEXT_DOMAIN) => $settings['version'],
@@ -15,6 +15,8 @@ foreach ($settings['php_settings'] as $value) {
         $pluginSettings[$key] = $val;
     }
 }
+
+// Get PHP information.
 $phpInfo = array(
     __('System name', self::TEXT_DOMAIN) => php_uname(),
     __('Architecture', self::TEXT_DOMAIN) => PHP_INT_SIZE === 8 ? 'x64' : 'x86',
@@ -47,6 +49,7 @@ $phpInfo = array(
     __('register_globals', self::TEXT_DOMAIN) => ini_get('register_globals'),
 );
 
+// Get Wordpress information.
 $wpInfo = array(
     __('Version', self::TEXT_DOMAIN) => get_bloginfo('version'),
     __('Multisite', self::TEXT_DOMAIN) => __(is_multisite() ? 'yes' : 'no', self::TEXT_DOMAIN),
@@ -57,6 +60,18 @@ $wpInfo = array(
     __('Language', self::TEXT_DOMAIN) => get_locale(),
 );
 
+// Get plugin information.
+$plugins = get_plugins();
+uasort($plugins, function ($a, $b) {
+    return strcmp(strtolower($a['Name']), strtolower($b['Name']));
+});
+$activePlugins = array_values(get_option('active_plugins'));
+foreach ($plugins as $key => &$plugin) {
+    $plugin['Active'] = in_array($key, $activePlugins);
+}
+
+// Get theme information.
+$theme = wp_get_theme();
 ?>
 <div class="wrap">
     <?php require_once('cps-tabs.php'); ?>
@@ -87,6 +102,23 @@ $wpInfo = array(
                         echo __('Readable', self::TEXT_DOMAIN) . ' = ' . __(is_readable($configFilePath) ? 'yes' : 'no', self::TEXT_DOMAIN) . PHP_EOL;
                         echo __('Writeable', self::TEXT_DOMAIN) . ' = ' . __(is_writeable($configFilePath) ? 'yes' : 'no', self::TEXT_DOMAIN) . PHP_EOL;
                     }
+                    echo PHP_EOL;
+                    echo '=== Enabled Plugins ===' . PHP_EOL;
+                    foreach ($plugins as $key => $plugin) {
+                        if ($plugin['Active']) {
+                            echo $plugin['Name'] . ' ' . $plugin['Version'] . PHP_EOL;
+                        }
+                    }
+                    echo PHP_EOL;
+                    echo '=== Disabled Plugins ===' . PHP_EOL;
+                    foreach ($plugins as $key => $plugin) {
+                        if (!$plugin['Active']) {
+                            echo $plugin['Name'] . ' ' . $plugin['Version'] . PHP_EOL;
+                        }
+                    }
+                    echo PHP_EOL;
+                    echo '=== Theme ===' . PHP_EOL;
+                    echo $theme['Name'] . ' ' . $theme['Version'] . PHP_EOL;
                     ?></textarea>
                     <p class="description"><?php _e('If you need help, copy and paste the above information for faster support.', self::TEXT_DOMAIN); ?></p>
                 </td>

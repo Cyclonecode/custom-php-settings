@@ -1,3 +1,6 @@
+= 1.4.3.2
+- Update Pro pricing.
+
 = 1.4.3.1
 - Minor update for rendering notices.
 - Add note about premium version.
