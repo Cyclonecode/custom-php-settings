@@ -32,7 +32,7 @@ abstract class Singleton
     /**
      * Prevent instantiation.
      */
-    final private function __clone()
+    private function __clone()
     {
     }
 
