@@ -7,7 +7,7 @@ use CustomPhpSettings\Plugin\Settings\Settings;
 
 class Backend extends Singleton
 {
-    const VERSION = '1.4.3.3';
+    const VERSION = '1.4.4';
     const SETTINGS_NAME = 'custom_php_settings';
     const TEXT_DOMAIN = 'custom-php-settings';
     const PARENT_MENU_SLUG = 'tools.php';
@@ -735,9 +735,14 @@ class Backend extends Singleton
                 $this->addSettingsMessage(sprintf(__('%s must be in the format: key=value', self::TEXT_DOMAIN), $setting[0]) . '<br />');
                 return -2;
             }
-        } elseif (count($setting) === 2 && in_array($setting[0], $iniSettings)) {
-            // This is a valid setting.
-            return 1;
+        } elseif (count($setting) === 2) {
+            if (in_array($setting[0], $iniSettings)) {
+                // This is a valid setting.
+                return 1;
+            } elseif ($setting[0][0] === '#') {
+                // this is a comment
+                return 2;
+            }
         }
         /* translators: %s: Name of PHP setting */
         $this->addSettingsMessage(sprintf(__('%s is not a valid setting.', self::TEXT_DOMAIN), $setting[0]) . '<br />');
