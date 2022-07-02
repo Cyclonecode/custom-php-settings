@@ -1,3 +1,6 @@
+= 1.4.4
+- Fix bug where comments that included '=' where not saved.
+
 = 1.4.3.3
 - Add plugin and theme information to status page.
 
