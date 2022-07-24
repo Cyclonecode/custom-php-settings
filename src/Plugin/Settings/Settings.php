@@ -86,7 +86,7 @@ class Settings implements \IteratorAggregate, \Countable, \ArrayAccess
      */
     public function delete()
     {
-        delete_option($this->optionName);
+        \delete_option($this->optionName);
         $this->settings = array();
         return $this;
     }
@@ -276,7 +276,7 @@ class Settings implements \IteratorAggregate, \Countable, \ArrayAccess
      */
     public function load()
     {
-        $this->settings = get_option($this->optionName);
+        $this->settings = \get_option($this->optionName);
         return $this;
     }
 
@@ -288,7 +288,7 @@ class Settings implements \IteratorAggregate, \Countable, \ArrayAccess
     public function save()
     {
         ksort($this->settings);
-        return update_option($this->optionName, $this->settings);
+        return \update_option($this->optionName, $this->settings);
     }
 
     /**
@@ -324,11 +324,9 @@ class Settings implements \IteratorAggregate, \Countable, \ArrayAccess
      */
     public function clean(array $options)
     {
-        if (is_array($options)) {
-            foreach ($options as $key => $value) {
-                if (!in_array($key, $this->settings)) {
-                    unset($this->settings[$key]);
-                }
+        foreach ($this->settings as $key => $value) {
+            if (!in_array($key, $options)) {
+                unset($this->settings[$key]);
             }
         }
         return $this;
