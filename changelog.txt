@@ -1,3 +1,9 @@
+= 1.4.5
+
+- Bump minimum support PHP version.
+- Update Pro notice.
+- Bump dependencies.
+
 = 1.4.4
 - Fix bug where comments that included '=' where not saved.
 

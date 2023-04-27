@@ -153,7 +153,5 @@ Fixes a bug where the plugin could not be deleted.
 
 == Changelog ==
 
-= 1.4.5
-- Bump minimum support PHP version.
-- Update Pro notice.
-- Bump dependencies.
+= dev
+- Fix faulty clean() method in settings.
